@@ -3,7 +3,7 @@
 
 = Introducción =
 
-El entorno de desarrollo elegido para este proyecto ha sido NetBeans 6.8. En esta página se describen los pasos necesarios para que el código fuente del proyecto pueda ser compilado adecuadamente por NetBeans 6.8.
+El IDE elegido para este proyecto ha sido NetBeans 6.8. En esta página se describen los pasos necesarios para que el código fuente del proyecto pueda ser compilado adecuadamente por NetBeans 6.8, utilizando JDK 1.6 y HDF Object Package 2.6.1.
 
 = Detalles =
 
