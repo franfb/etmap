@@ -25,4 +25,4 @@ Tras instalar el cliente subversion, procedemos a hacer un checkout del proyecto
 
 También debemos poner nuestro nombre de usuario y contraseña de google code (si estamos autorizados para hacer commits). Le damos a _Next_ y configuramos la ruta local de la copia de trabajo. Si hay alguna duda haciendo esto, podemos consultar [https://docs.google.com/fileview?id=0B-1TFEifNggmY2RjNzM0NTUtNzYzMi00ZjYyLTk1MGQtMWVjNWY0ODRmZTcy&hl=es este tutorial] en la sección _*Acceder a un repositorio existente*_.
 
-Ahora ya tendremos un proyecto NetBeans creado con el código fuente de _etmap_
+Ahora ya tendremos un proyecto NetBeans creado con el código fuente de _etmap_.
