@@ -1,9 +1,9 @@
-#summary Instalación de la librería HDF para Java en NetBeans o Eclipse
+#summary Instalación de la librería HDF Object Package en NetBeans o Eclipse
 #labels Phase-Deploy,Phase-Implementation
 
 = Introducción =
 
-Para poder compilar los códigos fuentes de este proyecto es necesario tener configurada la librería HDF para Java en el IDE elegido, en concreto, debemos poder usar las clases correspondientes al formato HDF4. En nuestro caso usaremos NetBeans como referencia, pero la forma de hacerlo en Eclipse es muy parecida.
+Para poder compilar los códigos fuentes de este proyecto es necesario tener configurada la librería HDF para Java (conocida como HDF Object Package) en el IDE elegido, en concreto, debemos poder usar las clases correspondientes al formato HDF4. En nuestro caso usaremos NetBeans como referencia, pero la forma de hacerlo en Eclipse es muy parecida.
 
 = Detalles =
 
