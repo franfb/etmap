@@ -17,7 +17,7 @@ Si estás utilizando Windows x64, tienes que utilizar JDK 1.6 de 32 bits, ya que
 
 Nota: puede que el código fuente compile correctamente con versiones anteriores de los componentes utilizados, pero no lo hemos comprobado.
 
-Una vez descargado e instalado todo lo anterior, bastará con hacer un _*checkout*_ del proyecto en el repositorio subversion de este sitio mediante NetBeans. Pero primero, antes de poder utilizar subversion desde NetBeans necesitamos tener instalado un cliente subversion para línea de comandos. Los desarrolladores de NetBeans recomiendan el de [http://www.open.collab.net/downloads/netbeans/ CollabNet en su versión 1.5.x]. Éste es el que estamos usando nosotros, pero como hay que registrarse para descargarlo (aunque sea gratis) puede utilizar cualquier otro, no debería haber ningún problema.
+Una vez descargado e instalado todo lo anterior, bastará con hacer un _*checkout*_ del proyecto en el repositorio subversion de este sitio mediante NetBeans. Pero primero, antes de poder utilizar subversion desde NetBeans necesitamos tener instalado un cliente subversion para línea de comandos. Los desarrolladores de NetBeans recomiendan el de [http://www.open.collab.net/downloads/netbeans/ CollabNet en su versión 1.5.x]. Éste es el que estamos usando nosotros, pero como hay que registrarse para descargarlo (aunque sea gratis) se puede utilizar cualquier otro, no debería haber ningún problema.
 
 Tras instalar el cliente subversion, procedemos a hacer un checkout del proyecto. Para ello, vamos al menú _Team_ de NetBeans y seleccionamos la opción _Checkout..._ dentro del submenú _Subversion_. Una vez ahí, ponemos la dirección del repositorio: 
 
