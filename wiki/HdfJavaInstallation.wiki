@@ -1,11 +1,13 @@
 #summary Instalación de la librería HDF Object Package en NetBeans o Eclipse
 #labels Phase-Deploy,Phase-Implementation
 
+<wiki:toc max_depth="3" />
+
 = Introducción =
 
 Para poder compilar los códigos fuentes de este proyecto es necesario tener configurada la librería HDF para Java (conocida como HDF Object Package) en el IDE elegido, en concreto, debemos poder usar las clases correspondientes al formato HDF4. En nuestro caso usaremos NetBeans como referencia, pero la forma de hacerlo en Eclipse es muy parecida.
 
-= Detalles =
+= Configuración de HDF Object Package =
 
 Una vez descargada y descomprimida la librería, lo primero que tenemos que hacer es configurar el CLASSPATH y el Library Path tal y como se explica en el [http://www.hdfgroup.org/hdf-java-html/hdf-object/use.html tutorial de HDF].
 
@@ -16,4 +18,6 @@ Tras esto, añadimos una librería nueva en NetBeans. Para ello, dentro del men�
 
 Con esto ya podemos utilizar las clases Java correspondientes a HDF4 en nuestro IDE.
 
-*Importante*: si estamos programando en Windows x64, hay que tener en cuenta que la librería HDF sólo funciona con una VM de Java de 32 bits (con Java de 64 bits da errores). Esto es debido a que en Windows la librería utiliza una DLL que está compilada para 32 bits. De momento no hay soporte para Windows x64. En Linux x64 no hay problemas. Si alguien está dispuesto y tiene tiempo de recompilar los fuentes de la DLL para Windows x64, que avise :-)
+== Incompatibilidad con Windows x64 ==
+
+Si estamos programando en Windows x64, hay que tener en cuenta que la librería HDF sólo funciona con una VM de Java de 32 bits (con Java de 64 bits da errores). Esto es debido a que en Windows la librería utiliza una DLL que está compilada para 32 bits. De momento no hay soporte para Windows x64. En Linux x64 no debería haber problemas, aunque no lo hemos probado. Si alguien está dispuesto y tiene tiempo de recompilar los fuentes de la DLL para Windows x64, que avise :-)
