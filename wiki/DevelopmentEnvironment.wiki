@@ -13,7 +13,7 @@ Para compilar adecuadamente los códigos fuente del proyecto necesitamos descarg
   * *HDF Object Package 2.6.1*
   * *Cliente subversion* para línea de comandos (se explica más adelante)
 
-Si estás utilizando Windows x64, tienes que utilizar JDK 1.6 de 32 bits, ya que de lo contrario la librería HDF Object Package no funcionará adecuadamente. Para obtener más información sobre la instalación de HDF y sobre este problema visita [HdfJavaInstallation _Instalación de HDF Object Package_].
+Si estás utilizando Windows x64, tienes que utilizar JDK 1.6 de 32 bits, ya que de lo contrario la librería HDF Object Package no funcionará adecuadamente. Para obtener más información sobre la instalación de HDF y sobre este problema visita [HdfJavaInstallation Instalación de HDF Object Package].
 
 Nota: puede que el código fuente compile correctamente con versiones anteriores de los componentes utilizados, pero no lo hemos comprobado.
 
