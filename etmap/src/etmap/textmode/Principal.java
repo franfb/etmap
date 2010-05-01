@@ -14,7 +14,7 @@ public class Principal {
 	public static void main(String[] args){
 		// TODO Auto-generated method stub
 		AllLstData lstData = new AllLstData();
-		lstData.writComparisonFile("D:\\etsii\\pfc\\datos\\Aqua11A1");
+//		lstData.writeComparisonFile("D:\\etsii\\pfc\\datos\\Aqua11A1");
 		
 //		ModisLoader loader = new ModisLoader();
 //		loader.openFile(dir.getAbsolutePath() + "\\" + children[0]);

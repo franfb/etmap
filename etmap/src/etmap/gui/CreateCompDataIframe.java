@@ -10,6 +10,7 @@
  */
 package etmap.gui;
 
+import etmap.modis.AllLstData;
 import javax.swing.JFileChooser;
 
 /**
@@ -21,6 +22,10 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
     /** Creates new form CreateCompDataIframe */
     public CreateCompDataIframe() {
         initComponents();
+        hdfDirTextField.setText("D:\\etsii\\pfc\\datos\\Aqua11A1");
+        stationsFileTextField.setText("D:\\etsii\\pfc\\datos\\estacionesagrocabildo.txt");
+        yearSpinner.setValue((Integer) 2009);
+
     }
 
     /** This method is called from within the constructor to
@@ -35,11 +40,11 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         hdfDirTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        stationDirTextField = new javax.swing.JTextField();
+        stationsFileTextField = new javax.swing.JTextField();
         openHdfDirButton = new javax.swing.JButton();
         openStationDirButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        yearSpinner = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
         outDirTextField = new javax.swing.JTextField();
         chooseOutDirButton = new javax.swing.JButton();
@@ -60,7 +65,7 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
-        stationDirTextField.setName("stationDirTextField"); // NOI18N
+        stationsFileTextField.setName("stationsFileTextField"); // NOI18N
 
         openHdfDirButton.setText(resourceMap.getString("openHdfDirButton.text")); // NOI18N
         openHdfDirButton.setName("openHdfDirButton"); // NOI18N
@@ -76,18 +81,26 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        jSpinner1.setName("jSpinner1"); // NOI18N
+        yearSpinner.setName("yearSpinner"); // NOI18N
 
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
+        jLabel4.setEnabled(false);
         jLabel4.setName("jLabel4"); // NOI18N
 
+        outDirTextField.setEnabled(false);
         outDirTextField.setName("outDirTextField"); // NOI18N
 
         chooseOutDirButton.setText(resourceMap.getString("chooseOutDirButton.text")); // NOI18N
+        chooseOutDirButton.setEnabled(false);
         chooseOutDirButton.setName("chooseOutDirButton"); // NOI18N
 
         beginButton.setText(resourceMap.getString("beginButton.text")); // NOI18N
         beginButton.setName("beginButton"); // NOI18N
+        beginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beginButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,32 +111,29 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(hdfDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(openHdfDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(stationDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(openStationDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
                                 .addComponent(outDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chooseOutDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(chooseOutDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(hdfDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(openHdfDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(stationsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(openStationDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(yearSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(235, 235, 235)
                         .addComponent(beginButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,17 +146,17 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(stationDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stationsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(openStationDirButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(yearSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(outDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chooseOutDirButton))
+                    .addComponent(chooseOutDirButton)
+                    .addComponent(outDirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(beginButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -158,13 +168,7 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
     private void openHdfDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openHdfDirButtonActionPerformed
         // TODO add your handling code here:
         JFileChooser chooser = new JFileChooser();
-        // Note: source for ExampleFileFilter can be found in FileChooserDemo,
-        // under the demo/jfc directory in the JDK.
-//    ExampleFileFilter filter = new ExampleFileFilter();
-//    filter.addExtension("jpg");
-//    filter.addExtension("gif");
-//    filter.setDescription("JPG & GIF Images");
-//    chooser.setFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = chooser.showOpenDialog(this.getParent());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             hdfDirTextField.setText(chooser.getSelectedFile().getAbsolutePath());
@@ -172,6 +176,17 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
                     + chooser.getSelectedFile().getName());
         }
     }//GEN-LAST:event_openHdfDirButtonActionPerformed
+
+    private void beginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beginButtonActionPerformed
+        // TODO add your handling code here:
+        if ((!hdfDirTextField.getText().equals("")) && (!stationsFileTextField.getText().equals("")) && ((Integer) yearSpinner.getValue() != 0)) {
+            AllLstData lstData = new AllLstData();
+            lstData.writeComparisonFile(hdfDirTextField.getText(), stationsFileTextField.getText(), ((Integer)yearSpinner.getValue()).toString());
+        }
+        else {
+            System.out.println("Debe especificar todos los parámetros requeridos.");
+        }
+    }//GEN-LAST:event_beginButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton beginButton;
     private javax.swing.JButton chooseOutDirButton;
@@ -180,10 +195,10 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JButton openHdfDirButton;
     private javax.swing.JButton openStationDirButton;
     private javax.swing.JTextField outDirTextField;
-    private javax.swing.JTextField stationDirTextField;
+    private javax.swing.JTextField stationsFileTextField;
+    private javax.swing.JSpinner yearSpinner;
     // End of variables declaration//GEN-END:variables
 }
