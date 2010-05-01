@@ -51,6 +51,7 @@ public class EtmapMainMdi extends javax.swing.JFrame {
         setName("Form"); // NOI18N
 
         desktopPane.setName("desktopPane"); // NOI18N
+        desktopPane.setPreferredSize(new java.awt.Dimension(800, 600));
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -135,11 +136,11 @@ public class EtmapMainMdi extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
         );
 
         pack();

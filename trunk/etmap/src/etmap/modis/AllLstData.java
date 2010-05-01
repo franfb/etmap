@@ -21,7 +21,7 @@ public class AllLstData {
 		loader = new ModisLoader();
 	}
 
-	public void writComparisonFile(String hdfDirName) {
+	public void writeComparisonFile(String hdfDirName, String stationsFileName, String year) {
 		// Buscamos todos los ficheros HDF del directorio que queremos usar
 		FilenameFilter hdfFilter = new FilenameFilter() {
 			public boolean accept(File dir, String name) {
@@ -34,12 +34,12 @@ public class AllLstData {
 		if (children != null) {
 			if (children.length > MAX_LST_FILES) {
 				System.out
-						.println("AVISO: Hay m�s de 365 ficheros HDF en el directorio");
+						.println("AVISO: Hay más de 365 ficheros HDF en el directorio");
 			}
 			
 			// Cargamos los datos de todas las estaciones
 			AllStations stations = new AllStations();
-			stations.readStationsData("D:\\etsii\\pfc\\datos\\estacionesagrocabildo.txt", "2009");
+			stations.readStationsData(stationsFileName, year);
 			
 			// Leemos los ficheros HDF y generamos la comparaci�n diaria entre los HDF y las estaciones
 			Double interpTempDay, interpTempNight;
