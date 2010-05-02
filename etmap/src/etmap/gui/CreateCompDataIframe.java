@@ -77,6 +77,11 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
 
         openStationDirButton.setText(resourceMap.getString("openStationDirButton.text")); // NOI18N
         openStationDirButton.setName("openStationDirButton"); // NOI18N
+        openStationDirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openStationDirButtonActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
@@ -166,7 +171,6 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openHdfDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openHdfDirButtonActionPerformed
-        // TODO add your handling code here:
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = chooser.showOpenDialog(this.getParent());
@@ -178,7 +182,6 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_openHdfDirButtonActionPerformed
 
     private void beginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beginButtonActionPerformed
-        // TODO add your handling code here:
         if ((!hdfDirTextField.getText().equals("")) && (!stationsFileTextField.getText().equals("")) && ((Integer) yearSpinner.getValue() != 0)) {
             AllLstData lstData = new AllLstData();
             lstData.writeComparisonFile(hdfDirTextField.getText(), stationsFileTextField.getText(), ((Integer)yearSpinner.getValue()).toString());
@@ -187,6 +190,18 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
             System.out.println("Debe especificar todos los parámetros requeridos.");
         }
     }//GEN-LAST:event_beginButtonActionPerformed
+
+    private void openStationDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openStationDirButtonActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int returnVal = chooser.showOpenDialog(this.getParent());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            stationsFileTextField.setText(chooser.getSelectedFile().getAbsolutePath());
+            System.out.println("You chose to open this file: "
+                    + chooser.getSelectedFile().getName());
+        }
+    }//GEN-LAST:event_openStationDirButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton beginButton;
     private javax.swing.JButton chooseOutDirButton;
