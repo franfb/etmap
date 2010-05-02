@@ -34,6 +34,7 @@ public class EtmapMainMdi extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         createCompFilesMenuItem = new javax.swing.JMenuItem();
+        showCompGraphMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
@@ -67,6 +68,15 @@ public class EtmapMainMdi extends javax.swing.JFrame {
             }
         });
         fileMenu.add(createCompFilesMenuItem);
+
+        showCompGraphMenuItem.setText(resourceMap.getString("showCompGraphMenuItem.text")); // NOI18N
+        showCompGraphMenuItem.setName("showCompGraphMenuItem"); // NOI18N
+        showCompGraphMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showCompGraphMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(showCompGraphMenuItem);
 
         openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
         openMenuItem.setName("openMenuItem"); // NOI18N
@@ -156,7 +166,7 @@ public class EtmapMainMdi extends javax.swing.JFrame {
 
     private void createCompFilesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCompFilesMenuItemActionPerformed
         // TODO add your handling code here:
-        CreateCompDataIframe iFrame = new CreateCompDataIframe();
+        CreateCompDataInternalFrame iFrame = new CreateCompDataInternalFrame();
         iFrame.setVisible(true);
         desktopPane.add(iFrame);
         try {
@@ -165,6 +175,16 @@ public class EtmapMainMdi extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_createCompFilesMenuItemActionPerformed
+
+    private void showCompGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCompGraphMenuItemActionPerformed
+        ShowCompGraphInternalFrame iFrame = new ShowCompGraphInternalFrame();
+        iFrame.setVisible(true);
+        desktopPane.add(iFrame);
+        try {
+            iFrame.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+        }
+    }//GEN-LAST:event_showCompGraphMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,5 +214,6 @@ public class EtmapMainMdi extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JMenuItem showCompGraphMenuItem;
     // End of variables declaration//GEN-END:variables
 }

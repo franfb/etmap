@@ -4,7 +4,7 @@
  */
 
 /*
- * CreateCompDataIframe.java
+ * CreateCompDataInternalFrame.java
  *
  * Created on 01-may-2010, 21:47:26
  */
@@ -17,10 +17,10 @@ import javax.swing.JFileChooser;
  *
  * @author Fran
  */
-public class CreateCompDataIframe extends javax.swing.JInternalFrame {
+public class CreateCompDataInternalFrame extends javax.swing.JInternalFrame {
 
-    /** Creates new form CreateCompDataIframe */
-    public CreateCompDataIframe() {
+    /** Creates new form CreateCompDataInternalFrame */
+    public CreateCompDataInternalFrame() {
         initComponents();
         hdfDirTextField.setText("D:\\etsii\\pfc\\datos\\Aqua11A1");
         stationsFileTextField.setText("D:\\etsii\\pfc\\datos\\estacionesagrocabildo.txt");
@@ -52,7 +52,7 @@ public class CreateCompDataIframe extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(etmap.gui.EtmapApp.class).getContext().getResourceMap(CreateCompDataIframe.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(etmap.gui.EtmapApp.class).getContext().getResourceMap(CreateCompDataInternalFrame.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
