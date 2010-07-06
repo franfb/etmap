@@ -1,4 +1,4 @@
-package datos;
+package etmap.modis;
 
 public class LstConstants {
 	//

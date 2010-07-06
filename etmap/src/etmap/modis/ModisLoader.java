@@ -1,4 +1,4 @@
-package datos;
+package etmap.modis;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class ModisLoader {
 		Group root = (Group) ((javax.swing.tree.DefaultMutableTreeNode) testFile
 				.getRootNode()).getUserObject();
 
-		System.out.println("Atributos del grupo raíz");
+		System.out.println("Atributos del grupo raï¿½z");
 		printAttributeList(root.getMetadata());
 		
 		Group group0 = (Group) root.getMemberList().get(0);

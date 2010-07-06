@@ -71,6 +71,7 @@ public class StationData {
 				if ((i + 1) != diaJuliano) {
 					for (int j = i; j < diaJuliano; j++) {
 						this.tmin[j] = this.tmed[j] = this.tmax[j] = StationConstants.NO_TEMPERATURE;
+                                                this.evTransp[j] = StationConstants.NO_EVAPO_TRANSP;
 					}
 					i = diaJuliano - 1;
 				}
