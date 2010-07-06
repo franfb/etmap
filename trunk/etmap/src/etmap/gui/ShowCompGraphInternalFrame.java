@@ -10,6 +10,7 @@
  */
 package etmap.gui;
 
+import etmap.stations.StationModisComp;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,11 +26,15 @@ import javax.swing.ListModel;
  */
 public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
 
+    private StationModisComp[] stations;
+
     /** Creates new form ShowCompGraphInternalFrame */
     public ShowCompGraphInternalFrame() {
         initComponents();
+        // Default values
         stationsFileTextField.setText("D:\\etsii\\pfc\\datos\\estacionesagrocabildo.txt");
         updateStationList();
+        yearSpinner.setValue((Integer) 2009);
     }
 
     /** This method is called from within the constructor to
@@ -48,6 +53,14 @@ public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         showGraph = new javax.swing.JButton();
         openStationDirButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        yearSpinner = new javax.swing.JSpinner();
+        showMinTempCheckBox = new javax.swing.JCheckBox();
+        showMaxTempCheckBox = new javax.swing.JCheckBox();
+        showDayTempCheckBox = new javax.swing.JCheckBox();
+        showNightTempCheckBox = new javax.swing.JCheckBox();
+        showEtCheckBox = new javax.swing.JCheckBox();
+        interpCheckBox = new javax.swing.JCheckBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -58,7 +71,6 @@ public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         stationList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        stationList.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
         stationList.setName("stationList"); // NOI18N
         jScrollPane1.setViewportView(stationList);
 
@@ -74,6 +86,11 @@ public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
         showGraph.setText(resourceMap.getString("showGraph.text")); // NOI18N
         showGraph.setToolTipText(resourceMap.getString("showGraph.toolTipText")); // NOI18N
         showGraph.setName("showGraph"); // NOI18N
+        showGraph.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showGraphActionPerformed(evt);
+            }
+        });
 
         openStationDirButton.setText(resourceMap.getString("openStationDirButton.text")); // NOI18N
         openStationDirButton.setName("openStationDirButton"); // NOI18N
@@ -83,28 +100,59 @@ public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+
+        yearSpinner.setName("yearSpinner"); // NOI18N
+
+        showMinTempCheckBox.setText(resourceMap.getString("showMinTempCheckBox.text")); // NOI18N
+        showMinTempCheckBox.setName("showMinTempCheckBox"); // NOI18N
+
+        showMaxTempCheckBox.setText(resourceMap.getString("showMaxTempCheckBox.text")); // NOI18N
+        showMaxTempCheckBox.setName("showMaxTempCheckBox"); // NOI18N
+
+        showDayTempCheckBox.setText(resourceMap.getString("showDayTempCheckBox.text")); // NOI18N
+        showDayTempCheckBox.setName("showDayTempCheckBox"); // NOI18N
+
+        showNightTempCheckBox.setText(resourceMap.getString("showNightTempCheckBox.text")); // NOI18N
+        showNightTempCheckBox.setName("showNightTempCheckBox"); // NOI18N
+
+        showEtCheckBox.setText(resourceMap.getString("showEtCheckBox.text")); // NOI18N
+        showEtCheckBox.setName("showEtCheckBox"); // NOI18N
+
+        interpCheckBox.setText(resourceMap.getString("interpCheckBox.text")); // NOI18N
+        interpCheckBox.setName("interpCheckBox"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(yearSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(stationsFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(openStationDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(stationsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(openStationDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(showGraph)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(showGraph)
+                            .addComponent(interpCheckBox)
+                            .addComponent(showEtCheckBox)
+                            .addComponent(showNightTempCheckBox)
+                            .addComponent(showDayTempCheckBox)
+                            .addComponent(showMaxTempCheckBox)
+                            .addComponent(showMinTempCheckBox))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,12 +162,28 @@ public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(stationsFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(openStationDirButton))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(yearSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(showGraph)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(showMinTempCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showMaxTempCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showDayTempCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showNightTempCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showEtCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(interpCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(showGraph))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -145,6 +209,12 @@ public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
                     i++;
                 }
                 stationList.setModel(list);
+                if (i > 0) {
+                    stations = new StationModisComp[i];
+                    for (int j = 0; j < i; j++) {
+                        stations[j] = new StationModisComp();
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -173,13 +243,39 @@ public class ShowCompGraphInternalFrame extends javax.swing.JInternalFrame {
             }
         }
 }//GEN-LAST:event_openStationDirButtonActionPerformed
+
+    private void showGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showGraphActionPerformed
+        if (stationList.getSelectedIndex() != -1) {
+            if (!stations[stationList.getSelectedIndex()].isAssigned()) {
+                // Leemos el fichero de datos comparativos
+                stations[stationList.getSelectedIndex()].readCompFile(stationsFileTextField.getText() +
+                        "\\..\\Porestaciones" + yearSpinner.getValue().toString() + "et\\",
+                        (String) stationList.getSelectedValue(),
+                        yearSpinner.getValue().toString());
+            }
+            stations[stationList.getSelectedIndex()].showGraph(showMinTempCheckBox.isSelected(),
+                    showMaxTempCheckBox.isSelected(),
+                    showDayTempCheckBox.isSelected(),
+                    showNightTempCheckBox.isSelected(),
+                    showEtCheckBox.isSelected(),
+                    interpCheckBox.isSelected());
+        }
+    }//GEN-LAST:event_showGraphActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox interpCheckBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton openStationDirButton;
+    private javax.swing.JCheckBox showDayTempCheckBox;
+    private javax.swing.JCheckBox showEtCheckBox;
     private javax.swing.JButton showGraph;
+    private javax.swing.JCheckBox showMaxTempCheckBox;
+    private javax.swing.JCheckBox showMinTempCheckBox;
+    private javax.swing.JCheckBox showNightTempCheckBox;
     private javax.swing.JList stationList;
     private javax.swing.JTextField stationsFileTextField;
+    private javax.swing.JSpinner yearSpinner;
     // End of variables declaration//GEN-END:variables
 }

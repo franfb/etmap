@@ -1,4 +1,4 @@
-package datos;
+package etmap.modis;
 
 import java.lang.Math;
 
@@ -78,7 +78,7 @@ public class LstData {
 				}
 			}
 		} else {
-			System.out.println("Las variables lat/lon no están inicializadas.");
+			System.out.println("Las variables lat/lon no estï¿½n inicializadas.");
 		}
 	}
 	
@@ -91,7 +91,7 @@ public class LstData {
 	}
 	
 	public double getInterpolatedTemperature(double lat, double lon) {
-		// Buscamos la posición del dataset más próxima a la lat/lon solicitada
+		// Buscamos la posiciï¿½n del dataset mï¿½s prï¿½xima a la lat/lon solicitada
 		double la = lat * (Math.PI / 180.0) * LstConstants.EARTH_RADIUS;
 		double y_interp = (la - LstConstants.VULAT)
 				/ (LstConstants.DELTA * (LstConstants.VLLAT - LstConstants.VULAT));
@@ -162,7 +162,7 @@ public class LstData {
 	}
 	
 //	public double getInterpolatedTemperature(double lat, double lon) {
-//		// Buscamos la latitud más próxima a la solicitada
+//		// Buscamos la latitud mï¿½s prï¿½xima a la solicitada
 //		int y_sup, y_inf;
 //		int y = 0;
 //		while ((y < dimY) && (lat <= this.lat[y * dimY])) {
@@ -176,7 +176,7 @@ public class LstData {
 //		System.out.println("lat = " + lat);
 //		System.out.println("lat2 = " + this.lat[y_inf * dimY]);
 //		
-//		// Buscamos la longitud más próxima a la solicitada
+//		// Buscamos la longitud mï¿½s prï¿½xima a la solicitada
 //		int x_der, x_izq;
 //		int x = dimX - 1;
 //		while ((x >= 0) && (lon <= this.lon[y_sup * dimY + x])) {
@@ -267,7 +267,7 @@ public class LstData {
 			}
 		}
 		else {
-			System.out.println("La variable data no está inicializada");
+			System.out.println("La variable data no estï¿½ inicializada");
 		}
 	}
 }
