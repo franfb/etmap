@@ -54,6 +54,7 @@ public class CapturaDatos {
         } else {
             if (Ftp.descargarFichero("mBinary", dirBase, fecha, nombreHdf, Ficheros.getRuta_directorio())) {
                 System.out.println("El HDF " + nombreHdf + " ha sido desgargado del FTP");
+                Ficheros.Actualizar();
                 return nombreHdf;
             } else {
                 System.out.println("El HDF solicitado existe pero no se ha podido descargar del FTP");
