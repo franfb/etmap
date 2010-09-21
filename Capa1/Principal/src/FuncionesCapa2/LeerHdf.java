@@ -6,6 +6,7 @@ package FuncionesCapa2;
 
 import FuncionesCapa1.CapturaDatos;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -17,7 +18,11 @@ public class LeerHdf {
     private static String SAT_TERRA = "MOD11A1";
     private static String SAT_AQUA = "MYD11A1";
     private static String GRANULO = "h16v06";
-    CapturaDatos datos;
+    private CapturaDatos datos;
+    private String[] aquaFiles;
+    private String[] terraFiles;
+    private String[] aquaFilesFailed;
+    private String[] terraFilesFailed;
 
     public LeerHdf() {
         String directorio_local_de_hdfs = "d:\\etsii\\pfc\\hdfs\\";
@@ -75,18 +80,38 @@ public class LeerHdf {
 
         SimpleDateFormat FormatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 
-        // Por hacer: guardar los nombres que devuelve la clase datos en un array de string
-        // para leerlos luego con los métodos de la clase ModisLoader y AllLstData
-
+        ArrayList vAqua = new ArrayList();
+        ArrayList vTerra = new ArrayList();
+        ArrayList vAquaFailed = new ArrayList();
+        ArrayList vTerraFailed = new ArrayList();
 
         while (orig.compareTo(fin) <= 0) {
             String nombre = datos.obtenerHdfLocal(SAT_AQUA, GRANULO, FormatoFecha.format(orig.getTime()));
             if (nombre == null) {
                 nombre = datos.obtenerHdfFTP(SAT_AQUA, GRANULO, FormatoFecha.format(orig.getTime()));
             }
+            if (nombre == null) {
+                vAquaFailed.add(FormatoFecha.format(orig.getTime()));
+            } else {
+                vAqua.add(nombre);
+            }
+
+            nombre = datos.obtenerHdfLocal(SAT_TERRA, GRANULO, FormatoFecha.format(orig.getTime()));
+            if (nombre == null) {
+                nombre = datos.obtenerHdfFTP(SAT_TERRA, GRANULO, FormatoFecha.format(orig.getTime()));
+            }
+            if (nombre == null) {
+                vTerraFailed.add(FormatoFecha.format(orig.getTime()));
+            } else {
+                vTerra.add(nombre);
+            }
+
             orig.add(Calendar.DAY_OF_MONTH, 1);
         }
+
+        aquaFiles = (String[]) (vAqua.toArray(new String[vAqua.size()]));
+        terraFiles = (String[]) (vTerra.toArray(new String[vTerra.size()]));
+        aquaFilesFailed = (String[]) (vAquaFailed.toArray(new String[vAquaFailed.size()]));
+        terraFilesFailed = (String[]) (vTerraFailed.toArray(new String[vTerraFailed.size()]));
     }
-
-
 }
