@@ -40,6 +40,14 @@ public class LeerHdf {
      * @see #buscarIntervalo(int, int, int, int, int, int) 
      */
     public void buscarIntervalo(int dia, int mes, int ano, int diasHaciaAtras) {
+        Calendar orig = Calendar.getInstance();
+        orig.set(ano, mes - 1, dia);  // Enero == 0
+        orig.add(Calendar.DAY_OF_MONTH, -diasHaciaAtras);
+
+        buscarIntervalo(orig.get(Calendar.DAY_OF_MONTH),
+                orig.get(Calendar.MONTH) + 1,
+                orig.get(Calendar.YEAR),
+                dia, mes, ano);
     }
 
     /**
@@ -66,6 +74,11 @@ public class LeerHdf {
         fin.set(anoFin, mesFin - 1, diaFin);
 
         SimpleDateFormat FormatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+
+        // Por hacer: guardar los nombres que devuelve la clase datos en un array de string
+        // para leerlos luego con los métodos de la clase ModisLoader y AllLstData
+
+
         while (orig.compareTo(fin) <= 0) {
             String nombre = datos.obtenerHdfLocal(SAT_AQUA, GRANULO, FormatoFecha.format(orig.getTime()));
             if (nombre == null) {
@@ -74,4 +87,6 @@ public class LeerHdf {
             orig.add(Calendar.DAY_OF_MONTH, 1);
         }
     }
+
+
 }
