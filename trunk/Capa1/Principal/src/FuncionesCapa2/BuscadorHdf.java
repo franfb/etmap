@@ -13,18 +13,18 @@ import java.util.Calendar;
  *
  * @author Fran
  */
-public class LeerHdf {
+public class BuscadorHdf {
 
     private static String SAT_TERRA = "MOD11A1";
     private static String SAT_AQUA = "MYD11A1";
     private static String GRANULO = "h16v06";
     private CapturaDatos datos;
-    private String[] aquaFiles;
-    private String[] terraFiles;
-    private String[] aquaFilesFailed;
-    private String[] terraFilesFailed;
+    private String[] fichAqua;
+    private String[] fichTerra;
+    private String[] fichAquaFallo;
+    private String[] fichTerraFallo;
 
-    public LeerHdf() {
+    public BuscadorHdf() {
         String directorio_local_de_hdfs = "d:\\etsii\\pfc\\hdfs\\";
         String ftp_de_hdfs = "e4ftl01u.ecs.nasa.gov";
         datos = new CapturaDatos(directorio_local_de_hdfs, ftp_de_hdfs, 21, "anonymous", "anonymous");
@@ -62,6 +62,12 @@ public class LeerHdf {
      * 06-04-2010 como fecha inicial y el día 10-04-2010 como fecha final,
      * se buscarán los HDF desde el día 06 hasta el día 10 de abril de 2010,
      * ambos inclusive.
+     *
+     * Una vez que encuentra los ficheros solicitados, guarda la lista de los
+     * mismos en los arrays fichAqua y fichTerra. Si alguno de los ficheros
+     * solicitados no puede ser encontrado, se guarda la fecha correspondiente
+     * al mismo en alguno de los arrays fichAquaFallo o fichTerraFallo,
+     * dependiendo de a qué satélite corresponda el fichero no encontrado.
      *
      * @param diaIni Día del mes de la fecha inicial.
      * @param mesIni Mes de la fecha inicial.
@@ -109,9 +115,26 @@ public class LeerHdf {
             orig.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        aquaFiles = (String[]) (vAqua.toArray(new String[vAqua.size()]));
-        terraFiles = (String[]) (vTerra.toArray(new String[vTerra.size()]));
-        aquaFilesFailed = (String[]) (vAquaFailed.toArray(new String[vAquaFailed.size()]));
-        terraFilesFailed = (String[]) (vTerraFailed.toArray(new String[vTerraFailed.size()]));
+        fichAqua = (String[]) (vAqua.toArray(new String[vAqua.size()]));
+        fichTerra = (String[]) (vTerra.toArray(new String[vTerra.size()]));
+        fichAquaFallo = (String[]) (vAquaFailed.toArray(new String[vAquaFailed.size()]));
+        fichTerraFallo = (String[]) (vTerraFailed.toArray(new String[vTerraFailed.size()]));
     }
+
+    public String[] getFichAqua() {
+        return fichAqua;
+    }
+
+    public String[] getFichAquaFallo() {
+        return fichAquaFallo;
+    }
+
+    public String[] getFichTerra() {
+        return fichTerra;
+    }
+
+    public String[] getFichTerraFallo() {
+        return fichTerraFallo;
+    }
+
 }
