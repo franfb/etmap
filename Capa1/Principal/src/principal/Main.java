@@ -6,7 +6,7 @@
 package principal;
 
 import FuncionesCapa1.*;
-import FuncionesCapa2.LeerHdf;
+import FuncionesCapa2.BuscadorHdf;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,7 +47,7 @@ System.out.println ("Next Day: " + nextDay.getTime());
         String granulo_estudiado = "h16v06";
         String fecha = "07/07/2010";
 //        Calendar orig = Calendar.getInstance();
-//        LeerHdf leer = new LeerHdf();
+//        BuscadorHdf leer = new BuscadorHdf();
 //        leer.
 
         CapturaDatos Datos = new CapturaDatos(directorio_local_de_hdfs, ftp_de_hdfs, 21, "anonymous", "anonymous");
