@@ -24,9 +24,9 @@ public class BuscadorHdf {
     private String[] fichAquaFallo;
     private String[] fichTerraFallo;
 
-    public BuscadorHdf() {
-        String directorio_local_de_hdfs = "d:\\etsii\\pfc\\hdfs\\";
-        String ftp_de_hdfs = "e4ftl01u.ecs.nasa.gov";
+    public BuscadorHdf(String dirHdfs, String ftpHdfs) {
+        String directorio_local_de_hdfs = dirHdfs;
+        String ftp_de_hdfs = ftpHdfs;
         datos = new CapturaDatos(directorio_local_de_hdfs, ftp_de_hdfs, 21, "anonymous", "anonymous");
     }
 
