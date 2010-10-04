@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package FuncionesCapa2;
 
 /**
@@ -10,9 +9,89 @@ package FuncionesCapa2;
  * @author Fran
  */
 public class CargadorHdf {
-    private BuscadorHdf buscador;
 
-    public CargadorHdf() {
-        buscador = new BuscadorHdf();
+    private BuscadorHdf buscador;
+    private LstData[] lst7am;  // Terra at 7:00 AM
+    private LstData[] lst13pm; // Aqua at 13:00 PM
+    private LstData[] lst19pm; // Terra at 19:00 PM
+    private LstData[] lst1am;  // Aqua at 01:00 AM
+    private ModisLoader cargadorModis;
+    private String dirHdf;
+    private static final int MAX_HDF_FILES = 10;
+
+    public CargadorHdf(String dirHdfs, String ftpHdfs) {
+        String directorio_local_de_hdfs = "d:\\etsii\\pfc\\hdfs\\";
+        String ftp_de_hdfs = "e4ftl01u.ecs.nasa.gov";
+        dirHdf = directorio_local_de_hdfs;
+        buscador = new BuscadorHdf(directorio_local_de_hdfs, ftp_de_hdfs);
+        cargadorModis = new ModisLoader();
+    }
+
+    public void buscarHdfs(int dia, int mes, int ano, int diasHaciaAtras) {
+        if (diasHaciaAtras + 1 > MAX_HDF_FILES) {
+            System.out.println("Error: la cantidad de dias hacia atrás no debe ser superior a 9.");
+        } else {
+            buscador.buscarIntervalo(dia, mes, ano, diasHaciaAtras);
+            if (buscador.getFichAquaFallo().length > 0) {
+                System.out.println("Aviso: no se han encontrado los ficheros HDF de Aqua en las siguientes fechas:");
+                for (int i = 0; i < buscador.getFichAquaFallo().length; i++) {
+                    System.out.println(buscador.getFichAquaFallo()[i]);
+                }
+            }
+            if (buscador.getFichTerraFallo().length > 0) {
+                System.out.println("Aviso: no se han encontrado los ficheros HDF de Terra en las siguientes fechas:");
+                for (int i = 0; i < buscador.getFichTerraFallo().length; i++) {
+                    System.out.println(buscador.getFichTerraFallo()[i]);
+                }
+            }
+
+            if (buscador.getFichAqua().length != buscador.getFichTerra().length) {
+                System.out.println("Error: el número de ficheros de Aqua y Terra encontrados es distinto.");
+            } else {
+                // Cargamos los ficheros en memoria
+                cargarHdfs();
+            }
+        }
+    }
+
+    private void cargarHdfs() {
+        String[] fichAqua = buscador.getFichAqua();
+        String[] fichTerra = buscador.getFichTerra();
+        lst7am = new LstData[fichTerra.length];
+        lst13pm = new LstData[fichAqua.length];
+        lst19pm = new LstData[fichTerra.length];
+        lst1am = new LstData[fichAqua.length];
+
+        // Cargamos los ficheros de Terra
+        for (int i = 0; i < fichTerra.length; i++) {
+            try {
+                cargadorModis.openFile(dirHdf + "\\" + fichTerra[i]);
+                lst7am[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
+                lst19pm[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Cargamos los ficheros de Aqua
+        for (int i = 0; i < fichAqua.length; i++) {
+            try {
+                cargadorModis.openFile(dirHdf + "\\" + fichAqua[i]);
+                lst13pm[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
+                lst1am[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private LstData readDataset(int datasetType, ModisLoader loader) throws Exception {
+        LstData data = new LstData(LstConstants.DIM_X, LstConstants.DIM_Y,
+                LstConstants.SCALE_FACTOR);
+        loader.readDataset(data, datasetType);
+//		data.setCoordinates();
+        return data;
     }
 }
