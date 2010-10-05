@@ -212,7 +212,7 @@ public class ListaFTP {
                     ArrayList files = listaArchivos();
                     for (int j = 0; j < files.toArray().length; j++) {
                         if (files.toArray()[j].toString().contains(satelite + ".A" + fechaJul.get(Calendar.YEAR)
-                            + fechaJul.get(Calendar.DAY_OF_YEAR) + "." + granulo)) {
+                            + String.format("%03d", fechaJul.get(Calendar.DAY_OF_YEAR)) + "." + granulo)) {
                             FTPFile encontrado = (FTPFile) files.toArray()[j];
                             return encontrado.getName();
                         }
