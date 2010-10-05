@@ -7,6 +7,7 @@ package principal;
 
 import FuncionesCapa1.*;
 import FuncionesCapa2.BuscadorHdf;
+import FuncionesCapa2.ModeloEt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -46,29 +47,39 @@ System.out.println ("Next Day: " + nextDay.getTime());
         String satelite_usado = "MOD11A1";
         String granulo_estudiado = "h16v06";
         String fecha = "07/07/2010";
+
+        ModeloEt modelo = new ModeloEt(0, directorio_local_de_hdfs, ftp_de_hdfs, 0.5, -20);
+        modelo.cargarDia(1, 1, 2009);
+        for (int i = 0; i < 1200; i++) {
+            for (int j = 0; j < 1200; j++) {
+                Double et = modelo.getEtByPos(i, j);
+                if (et != ModeloEt.NO_EVAPOTRANSP)
+                    System.out.println("Evapotranspiración (" + i + ", " + j + ") = " + et.toString());
+            }
+        }
 //        Calendar orig = Calendar.getInstance();
 //        BuscadorHdf leer = new BuscadorHdf();
 //        leer.
 
-        CapturaDatos Datos = new CapturaDatos(directorio_local_de_hdfs, ftp_de_hdfs, 21, "anonymous", "anonymous");
-        String nombre = Datos.obtenerHdfLocal(satelite_usado, granulo_estudiado, fecha);
-
-        if (nombre == null) {
-            InputStreamReader isr = new InputStreamReader(System.in);
-            BufferedReader br = new BufferedReader(isr);
-
-            try {
-                System.out.print("Desea descargar el fichero del FTP (si / no)? ");
-                String respuesta = br.readLine();
-                
-                if (respuesta.equals("si")) {
-                    System.out.println("Descargando... (esto puede tardar unos segundos, paciencia)");
-                    nombre = Datos.obtenerHdfFTP(satelite_usado, granulo_estudiado, fecha);
-                }
-            } catch (IOException ex) {
-                System.out.println("Error inesperado de entrada: " + ex);
-                return;
-            }
-        }
+//        CapturaDatos Datos = new CapturaDatos(directorio_local_de_hdfs, ftp_de_hdfs, 21, "anonymous", "anonymous");
+//        String nombre = Datos.obtenerHdfLocal(satelite_usado, granulo_estudiado, fecha);
+//
+//        if (nombre == null) {
+//            InputStreamReader isr = new InputStreamReader(System.in);
+//            BufferedReader br = new BufferedReader(isr);
+//
+//            try {
+//                System.out.print("Desea descargar el fichero del FTP (si / no)? ");
+//                String respuesta = br.readLine();
+//
+//                if (respuesta.equals("si")) {
+//                    System.out.println("Descargando... (esto puede tardar unos segundos, paciencia)");
+//                    nombre = Datos.obtenerHdfFTP(satelite_usado, granulo_estudiado, fecha);
+//                }
+//            } catch (IOException ex) {
+//                System.out.println("Error inesperado de entrada: " + ex);
+//                return;
+//            }
+//        }
     }
 }

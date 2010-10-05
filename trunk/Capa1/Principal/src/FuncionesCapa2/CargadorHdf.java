@@ -27,7 +27,7 @@ public class CargadorHdf {
         cargadorModis = new ModisLoader();
     }
 
-    public void buscarHdfs(int dia, int mes, int ano, int diasHaciaAtras) {
+    public boolean buscarHdfs(int dia, int mes, int ano, int diasHaciaAtras) {
         if (diasHaciaAtras + 1 > MAX_HDF_FILES) {
             System.out.println("Error: la cantidad de dias hacia atrás no debe ser superior a 9.");
         } else {
@@ -47,14 +47,19 @@ public class CargadorHdf {
 
             if (buscador.getFichAqua().length != buscador.getFichTerra().length) {
                 System.out.println("Error: el número de ficheros de Aqua y Terra encontrados es distinto.");
+            } else if (buscador.getFichAqua().length == 0) {
+                System.out.println("Error: el número de ficheros de Aqua es 0.");
+            } else if (buscador.getFichTerra().length == 0) {
+                System.out.println("Error: el número de ficheros de Terra es 0.");
             } else {
                 // Cargamos los ficheros en memoria
-                cargarHdfs();
+                return cargarHdfs();
             }
         }
+        return false;
     }
 
-    private void cargarHdfs() {
+    private boolean cargarHdfs() {
         String[] fichAqua = buscador.getFichAqua();
         String[] fichTerra = buscador.getFichTerra();
         lst7am = new LstData[fichTerra.length];
@@ -62,6 +67,7 @@ public class CargadorHdf {
         lst19pm = new LstData[fichTerra.length];
         lst1am = new LstData[fichAqua.length];
 
+        boolean status = true;
         // Cargamos los ficheros de Terra
         for (int i = 0; i < fichTerra.length; i++) {
             try {
@@ -71,6 +77,7 @@ public class CargadorHdf {
             }
             catch (Exception e) {
                 e.printStackTrace();
+                status = false;
             }
         }
 
@@ -83,8 +90,11 @@ public class CargadorHdf {
             }
             catch (Exception e) {
                 e.printStackTrace();
+                status = false;
             }
         }
+
+        return status;
     }
 
     private LstData readDataset(int datasetType, ModisLoader loader) throws Exception {
@@ -94,4 +104,21 @@ public class CargadorHdf {
 //		data.setCoordinates();
         return data;
     }
+
+    public LstData[] getLst13pm() {
+        return lst13pm;
+    }
+
+    public LstData[] getLst19pm() {
+        return lst19pm;
+    }
+
+    public LstData[] getLst1am() {
+        return lst1am;
+    }
+
+    public LstData[] getLst7am() {
+        return lst7am;
+    }
+
 }

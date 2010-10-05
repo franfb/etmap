@@ -40,7 +40,11 @@ public class LstData {
 	public double getScaledData(int x, int y) {
 		return data[y * dimY + x] * scaleFactor;
 	}
-	
+
+        /* Returns:
+         * double[0]: Latitude
+         * double[1]: Longitude
+        */
 	public double[] getLatLngByPos(int x, int y) {
 		double[] latLng = new double[2];
 		double delta = LstConstants.DELTA;

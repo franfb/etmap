@@ -26,7 +26,7 @@ public class CapturaDatos {
     public String obtenerHdfLocal(String satelite, String granulo, String fecha) {
         EstructuraFichero fich = Ficheros.ObtenerHDF(satelite, granulo, fecha);
         if (fich != null) {
-            System.out.println("El HDF solicitado es " + fich.getNombreFichero() + " y se encentra en el repositorio local");
+            System.out.println("El HDF solicitado es " + fich.getNombreFichero() + " ya se encentra en el repositorio local");
             return fich.getNombreFichero();
         } else {
             System.out.println("El HDF solicitado no se encentra en el repositorio local");
@@ -53,7 +53,7 @@ public class CapturaDatos {
             return null;
         } else {
             if (Ftp.descargarFichero("mBinary", dirBase, fecha, nombreHdf, Ficheros.getRuta_directorio())) {
-                System.out.println("El HDF " + nombreHdf + " ha sido desgargado del FTP");
+                System.out.println("El HDF " + nombreHdf + " ha sido descargado del FTP");
                 Ficheros.Actualizar();
                 return nombreHdf;
             } else {
