@@ -7,6 +7,7 @@ package principal;
 
 import FuncionesCapa1.*;
 import FuncionesCapa2.BuscadorHdf;
+import FuncionesCapa2.HorasSat;
 import FuncionesCapa2.ModeloEt;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,15 +49,15 @@ System.out.println ("Next Day: " + nextDay.getTime());
         String granulo_estudiado = "h16v06";
         String fecha = "07/07/2010";
 
-        ModeloEt modelo = new ModeloEt(0, directorio_local_de_hdfs, ftp_de_hdfs, 0.5, -20);
-        modelo.cargarDia(1, 1, 2009);
-        for (int i = 0; i < 1200; i++) {
-            for (int j = 0; j < 1200; j++) {
-                Double et = modelo.getEtByPos(i, j);
+        ModeloEt modelo = new ModeloEt(6, HorasSat.AQUA_14H, directorio_local_de_hdfs, ftp_de_hdfs, 0.5, -20);
+        modelo.cargarDia(7, 1, 2009);
+//        for (int i = 0; i < 1200; i++) {
+//            for (int j = 0; j < 1200; j++) {
+                Double et = modelo.getEtByLatLon(28.2333391114064, -16.7892393975174);
                 if (et != ModeloEt.NO_EVAPOTRANSP)
-                    System.out.println("Evapotranspiración (" + i + ", " + j + ") = " + et.toString());
-            }
-        }
+                    System.out.println("Evapotranspiración = " + et.toString());
+//            }
+//        }
 //        Calendar orig = Calendar.getInstance();
 //        BuscadorHdf leer = new BuscadorHdf();
 //        leer.
