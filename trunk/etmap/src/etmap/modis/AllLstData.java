@@ -10,12 +10,15 @@ import java.text.DecimalFormatSymbols;
 
 public class AllLstData {
     // Aqua satellite data
-
-    private LstData lstDay;    // Aqua at 13:00
-    private LstData lstNight;  // Aqua at 01:00
+    // In the Aqua satellite data, the dataset LST_DAY_1KM = 14:00
+    // Dataset LST_NIGHT_1KM = 02:00
+    private LstData lstAqua14;    // Aqua at 14:00
+    private LstData lstAqua02;  // Aqua at 02:00
     // Terra satellite data
-    private LstData lstMorning;    // Terra at 07:00
-    private LstData lstAfternoon;  // Terra at 19:00
+    // In the Terra satellite data, the dataset LST_DAY_1KM = 11:00
+    // Dataset LST_NIGHT_1KM = 23:00
+    private LstData lstTerra11;    // Terra at 11:00
+    private LstData lstTerra23;  // Terra at 23:00
     private ModisLoader aquaLoader, terraLoader;
     private static final int MAX_LST_FILES = 365;
 
@@ -48,7 +51,7 @@ public class AllLstData {
             stations.readStationsData(stationsFileName, year);
 
             // Leemos los ficheros HDF y generamos la comparaci�n diaria entre los HDF y las estaciones
-            Double interpTempDay, interpTempNight, interpTempMorning, interpTempAfternoon;
+            Double interpTempAqua14, interpTempAqua02, interpTempTerra11, interpTempTerra23;
 
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setDecimalSeparator('.');
@@ -60,62 +63,62 @@ public class AllLstData {
                 System.out.println("Leyendo " + terraFiles[i]);
                 try {
                     aquaLoader.openFile(dirAqua.getAbsolutePath() + "\\" + aquaFiles[i]);
-                    lstDay = readDataset(ModisLoader.LST_DAY_1KM, aquaLoader);
-                    lstNight = readDataset(ModisLoader.LST_NIGHT_1KM, aquaLoader);
+                    lstAqua14 = readDataset(ModisLoader.LST_DAY_1KM, aquaLoader);
+                    lstAqua02 = readDataset(ModisLoader.LST_NIGHT_1KM, aquaLoader);
 
                     terraLoader.openFile(dirTerra.getAbsolutePath() + "\\" + terraFiles[i]);
-                    lstMorning = readDataset(ModisLoader.LST_NIGHT_1KM, terraLoader);
-                    lstAfternoon = readDataset(ModisLoader.LST_DAY_1KM, terraLoader);
+                    lstTerra11 = readDataset(ModisLoader.LST_DAY_1KM, terraLoader);
+                    lstTerra23 = readDataset(ModisLoader.LST_NIGHT_1KM, terraLoader);
 
                     for (int j = 0; j < stations.getNumStations(); j++) {
                         StationData station = stations.getStations()[j];
-                        interpTempDay = lstDay.getInterpolatedTemperature(station.getLat(), station.getLon());
-                        interpTempNight = lstNight.getInterpolatedTemperature(station.getLat(), station.getLon());
-                        interpTempMorning = lstMorning.getInterpolatedTemperature(station.getLat(), station.getLon());
-                        interpTempAfternoon = lstAfternoon.getInterpolatedTemperature(station.getLat(), station.getLon());
+                        interpTempAqua14 = lstAqua14.getInterpolatedTemperature(station.getLat(), station.getLon());
+                        interpTempAqua02 = lstAqua02.getInterpolatedTemperature(station.getLat(), station.getLon());
+                        interpTempTerra11 = lstTerra11.getInterpolatedTemperature(station.getLat(), station.getLon());
+                        interpTempTerra23 = lstTerra23.getInterpolatedTemperature(station.getLat(), station.getLon());
                         String line = new Integer(i + 1).toString();
                         line += " " + new Double(station.getTmin()[i]).toString();
                         line += " " + new Double(station.getTmax()[i]).toString();
 
-                        if ((interpTempNight == 0.0) && (writeMissingTemp)) {
+                        if ((interpTempAqua02 == 0.0) && (writeMissingTemp)) {
                             line += " " + formatter.format(StationConstants.NO_TEMPERATURE);
-                        } else if (interpTempNight != 0.0) {
-                            line += " " + formatter.format(interpTempNight - 273.15);
+                        } else if (interpTempAqua02 != 0.0) {
+                            line += " " + formatter.format(interpTempAqua02 - 273.15);
                         } else {
                             continue;
                         }
 
-                        if ((interpTempMorning == 0.0) && (writeMissingTemp)) {
+                        if ((interpTempTerra11 == 0.0) && (writeMissingTemp)) {
                             line += " " + formatter.format(StationConstants.NO_TEMPERATURE);
-                        } else if (interpTempMorning != 0.0) {
-                            line += " " + formatter.format(interpTempMorning - 273.15);
+                        } else if (interpTempTerra11 != 0.0) {
+                            line += " " + formatter.format(interpTempTerra11 - 273.15);
                         } else {
                             continue;
                         }
 
-                        if ((interpTempDay == 0.0) && (writeMissingTemp)) {
+                        if ((interpTempAqua14 == 0.0) && (writeMissingTemp)) {
                             line += " " + formatter.format(StationConstants.NO_TEMPERATURE);
-                        } else if (interpTempDay != 0.0) {
-                            line += " " + formatter.format(interpTempDay - 273.15);
+                        } else if (interpTempAqua14 != 0.0) {
+                            line += " " + formatter.format(interpTempAqua14 - 273.15);
                         } else {
                             continue;
                         }
 
-                        if ((interpTempAfternoon == 0.0) && (writeMissingTemp)) {
+                        if ((interpTempTerra23 == 0.0) && (writeMissingTemp)) {
                             line += " " + formatter.format(StationConstants.NO_TEMPERATURE);
-                        } else if (interpTempAfternoon != 0.0) {
-                            line += " " + formatter.format(interpTempAfternoon - 273.15);
+                        } else if (interpTempTerra23 != 0.0) {
+                            line += " " + formatter.format(interpTempTerra23 - 273.15);
                         } else {
                             continue;
                         }
-//						if (interpTempDay == 0.0)
+//						if (interpTempAqua14 == 0.0)
 //							line += " " + formatter.format(StationConstants.NO_TEMPERATURE);
 //						else
-//							line += " " + formatter.format(interpTempDay - 273.15);
-//						if (interpTempNight == 0.0)
+//							line += " " + formatter.format(interpTempAqua14 - 273.15);
+//						if (interpTempAqua02 == 0.0)
 //							line += " " + formatter.format(StationConstants.NO_TEMPERATURE);
 //						else
-//							line += " " + formatter.format(interpTempNight - 273.15);
+//							line += " " + formatter.format(interpTempAqua02 - 273.15);
 
                         if ((station.getEvTransp()[i] == StationConstants.NO_EVAPO_TRANSP) && (!writeMissingEt)) {
                             continue;
@@ -127,8 +130,8 @@ public class AllLstData {
                     }
                     aquaLoader.closeFile();
                     terraLoader.closeFile();
-//					lstDay[i].getInterpolatedTemperature(28.2230644372507, -16.75267301976);
-//					lstDay[i].getInterpTemp(28.2230644372507, -16.75267301976);
+//					lstAqua14[i].getInterpolatedTemperature(28.2230644372507, -16.75267301976);
+//					lstAqua14[i].getInterpTemp(28.2230644372507, -16.75267301976);
 //					System.in.read();
                 } catch (Exception e) {
                     e.printStackTrace();
