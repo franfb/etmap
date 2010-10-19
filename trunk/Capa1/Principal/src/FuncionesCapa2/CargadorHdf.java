@@ -11,10 +11,10 @@ package FuncionesCapa2;
 public class CargadorHdf {
 
     private BuscadorHdf buscador;
-    private LstData[] lst7am;  // Terra at 7:00 AM
-    private LstData[] lst13pm; // Aqua at 13:00 PM
-    private LstData[] lst19pm; // Terra at 19:00 PM
-    private LstData[] lst1am;  // Aqua at 01:00 AM
+    private LstData[] lst11h;  // Terra at 7:00 AM
+    private LstData[] lst14h; // Aqua at 13:00 PM
+    private LstData[] lst23h; // Terra at 19:00 PM
+    private LstData[] lst02h;  // Aqua at 01:00 AM
     private ModisLoader cargadorModis;
     private String dirHdf;
     private static final int MAX_HDF_FILES = 10;
@@ -62,18 +62,18 @@ public class CargadorHdf {
     private boolean cargarHdfs() {
         String[] fichAqua = buscador.getFichAqua();
         String[] fichTerra = buscador.getFichTerra();
-        lst7am = new LstData[fichTerra.length];
-        lst13pm = new LstData[fichAqua.length];
-        lst19pm = new LstData[fichTerra.length];
-        lst1am = new LstData[fichAqua.length];
+        lst11h = new LstData[fichTerra.length];
+        lst14h = new LstData[fichAqua.length];
+        lst23h = new LstData[fichTerra.length];
+        lst02h = new LstData[fichAqua.length];
 
         boolean status = true;
         // Cargamos los ficheros de Terra
         for (int i = 0; i < fichTerra.length; i++) {
             try {
                 cargadorModis.openFile(dirHdf + "\\" + fichTerra[i]);
-                lst7am[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
-                lst19pm[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
+                lst11h[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
+                lst23h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -85,8 +85,8 @@ public class CargadorHdf {
         for (int i = 0; i < fichAqua.length; i++) {
             try {
                 cargadorModis.openFile(dirHdf + "\\" + fichAqua[i]);
-                lst13pm[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
-                lst1am[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
+                lst14h[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
+                lst02h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -105,20 +105,20 @@ public class CargadorHdf {
         return data;
     }
 
-    public LstData[] getLst13pm() {
-        return lst13pm;
+    public LstData[] getLst14h() {
+        return lst14h;
     }
 
-    public LstData[] getLst19pm() {
-        return lst19pm;
+    public LstData[] getLst23h() {
+        return lst23h;
     }
 
-    public LstData[] getLst1am() {
-        return lst1am;
+    public LstData[] getLst02h() {
+        return lst02h;
     }
 
-    public LstData[] getLst7am() {
-        return lst7am;
+    public LstData[] getLst11h() {
+        return lst11h;
     }
 
 }
