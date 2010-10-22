@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package FuncionesCapa1;
+package etp.accesodatos;
 
 import java.io.*;
 import java.util.*;

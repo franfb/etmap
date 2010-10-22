@@ -1,4 +1,4 @@
-package FuncionesCapa2;
+package etp.modelo;
 
 public class LstConstants {
 	//

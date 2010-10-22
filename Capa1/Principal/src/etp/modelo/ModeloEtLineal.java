@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package FuncionesCapa2;
+package etp.modelo;
 
 /**
  *
  * @author Fran
  */
-public class ModeloEt {
+public class ModeloEtLineal {
 
     private CargadorHdf cargador;
     private int diasAtrasUtilizados;
@@ -21,7 +21,7 @@ public class ModeloEt {
     public static final int TERRA_11_AM = 1;
     public static final int TERRA_23_PM = 3;
 
-    public ModeloEt(int diasHaciaAtras, HorasSat horaDeseada, String dirHdfs, String dirFtps, double pendiente, double despY) {
+    public ModeloEtLineal(int diasHaciaAtras, HorasSat horaDeseada, String dirHdfs, String dirFtps, double pendiente, double despY) {
         cargador = new CargadorHdf(dirHdfs, dirFtps);
         diasAtrasUtilizados = diasHaciaAtras;
         this.horaDeseada = horaDeseada;
