@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package FuncionesCapa2;
+package etp.modelo;
 
-import FuncionesCapa1.CapturaDatos;
+import etp.accesodatos.CapturaDatos;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
