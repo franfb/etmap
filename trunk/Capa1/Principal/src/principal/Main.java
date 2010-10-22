@@ -5,7 +5,6 @@
 
 package principal;
 
-import FuncionesCapa1.*;
 import etp.modelo.BuscadorHdf;
 import etp.modelo.HorasSat;
 import etp.modelo.ModeloEtLineal;
