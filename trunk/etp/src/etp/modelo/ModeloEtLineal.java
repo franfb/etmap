@@ -98,4 +98,28 @@ public class ModeloEtLineal {
     public void setDiasAtrasUtilizados(int diasAtrasUtilizados) {
         this.diasAtrasUtilizados = diasAtrasUtilizados;
     }
+
+    public double getDespY() {
+        return despY;
+    }
+
+    public void setDespY(double despY) {
+        this.despY = despY;
+    }
+
+    public HorasSat getHoraDeseada() {
+        return horaDeseada;
+    }
+
+    public void setHoraDeseada(HorasSat horaDeseada) {
+        this.horaDeseada = horaDeseada;
+    }
+
+    public double getPendiente() {
+        return pendiente;
+    }
+
+    public void setPendiente(double pendiente) {
+        this.pendiente = pendiente;
+    }
 }
