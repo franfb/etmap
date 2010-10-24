@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package principal;
+package etp.ejemplos;
 
 import etp.modelo.BuscadorHdf;
 import etp.modelo.HorasSat;
@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 
 
-public class Main {
+public class EjemploModeloLineal {
     /**
      * @param args the command line arguments
      *
