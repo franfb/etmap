@@ -4,6 +4,8 @@
  */
 package etp.modelo;
 
+import etp.configuracion.ParamConfig;
+
 /**
  *
  * @author Fran
@@ -19,19 +21,17 @@ public class CargadorHdf {
     private String dirHdf;
     private static final int MAX_HDF_FILES = 10;
 
-    public CargadorHdf(String dirHdfs, String ftpHdfs) {
-        String directorio_local_de_hdfs = "d:\\etsii\\pfc\\hdfs\\";
-        String ftp_de_hdfs = "e4ftl01u.ecs.nasa.gov";
-        dirHdf = directorio_local_de_hdfs;
-        buscador = new BuscadorHdf(directorio_local_de_hdfs, ftp_de_hdfs);
+    public CargadorHdf(ParamConfig config) {
+        dirHdf = config.getDirHdfs();
+        buscador = new BuscadorHdf(config);
         cargadorModis = new ModisLoader();
     }
 
-    public boolean buscarHdfs(int dia, int mes, int ano, int diasHaciaAtras) {
-        if (diasHaciaAtras + 1 > MAX_HDF_FILES) {
-            System.out.println("Error: la cantidad de dias hacia atrás no debe ser superior a 9.");
+    public int buscarHdfs(int dia, int mes, int ano, int diasUtilizados) {
+        if (diasUtilizados > MAX_HDF_FILES) {
+            System.out.println("Error: la cantidad de días utilizados no debe ser superior a " + Integer.toString(MAX_HDF_FILES) + ".");
         } else {
-            buscador.buscarIntervalo(dia, mes, ano, diasHaciaAtras);
+            buscador.buscarIntervalo(dia, mes, ano, diasUtilizados);
             if (buscador.getFichAquaFallo().length > 0) {
                 System.out.println("Aviso: no se han encontrado los ficheros HDF de Aqua en las siguientes fechas:");
                 for (int i = 0; i < buscador.getFichAquaFallo().length; i++) {
@@ -56,10 +56,15 @@ public class CargadorHdf {
                 return cargarHdfs();
             }
         }
-        return false;
+        return 0;
     }
 
-    private boolean cargarHdfs() {
+    /**
+     * Carga en memoria los ficheros HDF previamente buscados por buscarHdfs()
+     *
+     * @return Devuelve el número máximo de días disponibles en memoria
+     */
+    private int cargarHdfs() {
         String[] fichAqua = buscador.getFichAqua();
         String[] fichTerra = buscador.getFichTerra();
         lst11h = new LstData[fichTerra.length];
@@ -94,7 +99,12 @@ public class CargadorHdf {
             }
         }
 
-        return status;
+        if (status) {
+            return (fichTerra.length < fichAqua.length) ? fichTerra.length : fichAqua.length;
+        }
+        else {
+            return 0;
+        }
     }
 
     private LstData readDataset(int datasetType, ModisLoader loader) throws Exception {
@@ -121,4 +131,23 @@ public class CargadorHdf {
         return lst11h;
     }
 
+    /**
+     * Indica si para la búsqueda de los ficheros HDF se usará el FTP si dichos
+     * ficheros no se encuentran en el disco duro local.
+     *
+     * @return True si se usa el FTP para buscar los HDF; false si no se usa.
+     */
+    public Boolean getUsarFtp() {
+        return buscador.getUsarFtp();
+    }
+
+    /**
+     * Indica si para la búsqueda de los ficheros HDF se usará el FTP si dichos
+     * ficheros no se encuentran en el disco duro local.
+     *
+     * @param usarFtp A true indica que se use el FTP para buscar los HDF.
+     */
+    public void setUsarFtp(Boolean usarFtp) {
+        buscador.setUsarFtp(usarFtp);
+    }
 }

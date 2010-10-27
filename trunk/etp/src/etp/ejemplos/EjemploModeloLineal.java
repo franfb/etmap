@@ -48,6 +48,7 @@ System.out.println ("Next Day: " + nextDay.getTime());
         String granulo_estudiado = "h16v06";
         String fecha = "07/07/2010";
 
+
         ModeloEtLineal modelo = new ModeloEtLineal(6, HorasSat.AQUA_14H, directorio_local_de_hdfs, ftp_de_hdfs, 0.5, -20);
         modelo.cargarDia(7, 1, 2009);
 //        for (int i = 0; i < 1200; i++) {
