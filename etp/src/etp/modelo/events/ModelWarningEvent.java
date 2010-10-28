@@ -7,6 +7,8 @@ import java.util.EventObject;
  *
  */
 public class ModelWarningEvent extends EventObject {
+    public static final int MISSING_AQUA_FILES = 100;
+    public static final int MISSING_TERRA_FILES = 101;
     private int type;
 
     public ModelWarningEvent(Object source, int type) {
