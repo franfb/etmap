@@ -5,58 +5,88 @@
 package etp.modelo;
 
 import etp.configuracion.ParamConfig;
+import etp.modelo.events.ModelWarningEvent;
+import etp.modelo.exceptions.DistinctNumberTerraAquaFilesException;
+import etp.modelo.exceptions.ModelException;
+import etp.modelo.exceptions.NoFilesLoadedException;
+import etp.modelo.exceptions.NoHdfFilesException;
+import etp.modelo.exceptions.TooManyDaysRequestedException;
 
 /**
  *
  * @author Fran
  */
-public class CargadorHdf {
+class CargadorHdf extends BuscadorHdf {
 
-    private BuscadorHdf buscador;
-    private LstData[] lst11h;  // Terra at 7:00 AM
-    private LstData[] lst14h; // Aqua at 13:00 PM
-    private LstData[] lst23h; // Terra at 19:00 PM
-    private LstData[] lst02h;  // Aqua at 01:00 AM
+    //private BuscadorHdf buscador;
+    protected LstData[] lst11h;  // Terra at 7:00 AM
+    protected LstData[] lst14h; // Aqua at 13:00 PM
+    protected LstData[] lst23h; // Terra at 19:00 PM
+    protected LstData[] lst02h;  // Aqua at 01:00 AM
+    protected boolean datosCargados;
     private ModisLoader cargadorModis;
     private String dirHdf;
-    private static final int MAX_HDF_FILES = 10;
+    public static final int MAX_HDF_FILES = 10;
 
-    public CargadorHdf(ParamConfig config) {
+    protected CargadorHdf(ParamConfig config) {
+        super(config);
         dirHdf = config.getDirHdfs();
-        buscador = new BuscadorHdf(config);
+        //buscador = new BuscadorHdf(config);
+        datosCargados = false;
         cargadorModis = new ModisLoader();
     }
 
-    public int buscarHdfs(int dia, int mes, int ano, int diasUtilizados) {
+    /**
+     * Busca los ficheros HDF correspondientes al intervalo de días solicitado y
+     * los carga en memoria. El intervalo se especifica mediante una fecha de referencia y
+     * los días que se van a utilizar, contando el día de referencia. Por ejemplo, si
+     * especificamos el día 10-04-2010 y 5 días utilizados, buscará los HDF
+     * desde el día 06 hasta el día 10 de abril de 2010, ambos inclusive.
+     *
+     * @param dia Día del mes de la fecha de referencia.
+     * @param mes Mes de la fecha referencia.
+     * @param ano Año de la fecha referencia.
+     * @param diasUtilizados Días utilizados, inclusive la fecha de referencia, que
+     * permiten especificar el intervalo de fechas solicitado.
+     *
+     * @return Número de días efectivamente cargados en memoria (pueden ser menos
+     * de los solicitados).
+     */
+    public int buscarHdfs(int dia, int mes, int ano, int diasUtilizados) throws ModelException {
         if (diasUtilizados > MAX_HDF_FILES) {
             System.out.println("Error: la cantidad de días utilizados no debe ser superior a " + Integer.toString(MAX_HDF_FILES) + ".");
+            throw new TooManyDaysRequestedException(MAX_HDF_FILES);
         } else {
-            buscador.buscarIntervalo(dia, mes, ano, diasUtilizados);
-            if (buscador.getFichAquaFallo().length > 0) {
+            buscarIntervalo(dia, mes, ano, diasUtilizados);
+            if (fichAquaFallo.length > 0) {
+                fireModelWarningEvent(new ModelWarningEvent(this, ModelWarningEvent.MISSING_AQUA_FILES));
                 System.out.println("Aviso: no se han encontrado los ficheros HDF de Aqua en las siguientes fechas:");
-                for (int i = 0; i < buscador.getFichAquaFallo().length; i++) {
-                    System.out.println(buscador.getFichAquaFallo()[i]);
+                for (int i = 0; i < fichAquaFallo.length; i++) {
+                    System.out.println(getFichAquaFallo()[i]);
                 }
             }
-            if (buscador.getFichTerraFallo().length > 0) {
+            if (fichTerraFallo.length > 0) {
+                fireModelWarningEvent(new ModelWarningEvent(this, ModelWarningEvent.MISSING_TERRA_FILES));
                 System.out.println("Aviso: no se han encontrado los ficheros HDF de Terra en las siguientes fechas:");
-                for (int i = 0; i < buscador.getFichTerraFallo().length; i++) {
-                    System.out.println(buscador.getFichTerraFallo()[i]);
+                for (int i = 0; i < fichTerraFallo.length; i++) {
+                    System.out.println(fichTerraFallo[i]);
                 }
             }
 
-            if (buscador.getFichAqua().length != buscador.getFichTerra().length) {
+            if (fichAqua.length != fichTerra.length) {
                 System.out.println("Error: el número de ficheros de Aqua y Terra encontrados es distinto.");
-            } else if (buscador.getFichAqua().length == 0) {
+                throw new DistinctNumberTerraAquaFilesException();
+            } else if (fichAqua.length == 0) {
                 System.out.println("Error: el número de ficheros de Aqua es 0.");
-            } else if (buscador.getFichTerra().length == 0) {
+                throw new NoHdfFilesException("Aqua files number is 0.");
+            } else if (fichTerra.length == 0) {
                 System.out.println("Error: el número de ficheros de Terra es 0.");
+                throw new NoHdfFilesException("Terra files number is 0.");
             } else {
                 // Cargamos los ficheros en memoria
                 return cargarHdfs();
             }
         }
-        return 0;
     }
 
     /**
@@ -64,15 +94,14 @@ public class CargadorHdf {
      *
      * @return Devuelve el número máximo de días disponibles en memoria
      */
-    private int cargarHdfs() {
-        String[] fichAqua = buscador.getFichAqua();
-        String[] fichTerra = buscador.getFichTerra();
+    private int cargarHdfs() throws NoFilesLoadedException {
+//        String[] fichAqua = getFichAqua();
+//        String[] fichTerra = getFichTerra();
         lst11h = new LstData[fichTerra.length];
         lst14h = new LstData[fichAqua.length];
         lst23h = new LstData[fichTerra.length];
         lst02h = new LstData[fichAqua.length];
 
-        boolean status = true;
         // Cargamos los ficheros de Terra
         for (int i = 0; i < fichTerra.length; i++) {
             try {
@@ -81,8 +110,7 @@ public class CargadorHdf {
                 lst23h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
             catch (Exception e) {
-                e.printStackTrace();
-                status = false;
+                throw new NoFilesLoadedException();
             }
         }
 
@@ -94,24 +122,21 @@ public class CargadorHdf {
                 lst02h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
             catch (Exception e) {
-                e.printStackTrace();
-                status = false;
+                throw new NoFilesLoadedException();
             }
         }
 
-        if (status) {
-            return (fichTerra.length < fichAqua.length) ? fichTerra.length : fichAqua.length;
-        }
-        else {
-            return 0;
-        }
+        /* Los dos deben tener la misma longitud (se ha comprobado previa-
+         * mente en buscarHdfs()), por lo que da igual el que devolvamos.
+         */
+        datosCargados = true;
+        return fichAqua.length;
     }
 
     private LstData readDataset(int datasetType, ModisLoader loader) throws Exception {
         LstData data = new LstData(LstConstants.DIM_X, LstConstants.DIM_Y,
                 LstConstants.SCALE_FACTOR);
         loader.readDataset(data, datasetType);
-//		data.setCoordinates();
         return data;
     }
 
@@ -137,9 +162,9 @@ public class CargadorHdf {
      *
      * @return True si se usa el FTP para buscar los HDF; false si no se usa.
      */
-    public Boolean getUsarFtp() {
-        return buscador.getUsarFtp();
-    }
+//    public Boolean getUsarFtp() {
+//        return buscador.getUsarFtp();
+//    }
 
     /**
      * Indica si para la búsqueda de los ficheros HDF se usará el FTP si dichos
@@ -147,7 +172,7 @@ public class CargadorHdf {
      *
      * @param usarFtp A true indica que se use el FTP para buscar los HDF.
      */
-    public void setUsarFtp(Boolean usarFtp) {
-        buscador.setUsarFtp(usarFtp);
-    }
+//    public void setUsarFtp(Boolean usarFtp) {
+//        buscador.setUsarFtp(usarFtp);
+//    }
 }
