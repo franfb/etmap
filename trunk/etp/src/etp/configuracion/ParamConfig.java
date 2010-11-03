@@ -13,14 +13,16 @@ import etp.modelo.HorasSat;
 public class ParamConfig {
     private Integer diasUtilizados = 1;
     private HorasSat horaDeseada = HorasSat.AQUA_14H;
-    private String dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
+//    private String dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
+    private String dirHdfs = "/hdfs";
     private String dirFtp = "e4ftl01u.ecs.nasa.gov";
     private Boolean usarFtp = false;
 
     public void valoresPorDefecto() {
         diasUtilizados = 1;
         horaDeseada = HorasSat.AQUA_14H;
-        dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
+        //dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
+        dirHdfs = "/hdfs";
         dirFtp = "e4ftl01u.ecs.nasa.gov";
         usarFtp = false;
     }
