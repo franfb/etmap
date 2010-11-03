@@ -35,7 +35,7 @@ public class GetEtp {
 	@GET
 	@Path("{update}")
 	@Produces(MediaType.TEXT_HTML)
-	public String updateToCurrentDay(@QueryParam("dir") String dirHdf) {
+	public String updateToCurrentDay() {
 
 		Calendar today = Calendar.getInstance();
 		today.setTimeInMillis(System.currentTimeMillis());
@@ -48,7 +48,6 @@ public class GetEtp {
 		try {
 			modelo.setUsarFtp(true);
 			modelo.setDiasUtilizados(DEFAULT_DAYS_IN_MEMORY);
-			modelo.setDirHdf(dirHdf);
 //			int numDays = modelo.buscarHdfs(7, 1, 2009);
 			int numDays = modelo.buscarHdfs(refDay.get(Calendar.DAY_OF_MONTH), refDay.get(Calendar.MONTH) + 1, refDay.get(Calendar.YEAR));
 			modelo.setUsarFtp(false);
