@@ -53,7 +53,7 @@ public class EstructuraFichero {
         Fecha.set(Calendar.DAY_OF_YEAR, this.DiaJul);
 
         Dia = Fecha.get(Calendar.DAY_OF_MONTH);
-        Mes = Fecha.get(Calendar.MONTH) + 1; // representa los meses de 1 a 11
+        Mes = Fecha.get(Calendar.MONTH) + 1; // representa los meses de 0 a 11
         FormatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         FechaToString = FormatoFecha.format(Fecha.getTime());
     }
