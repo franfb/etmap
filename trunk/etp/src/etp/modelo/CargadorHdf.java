@@ -156,6 +156,15 @@ class CargadorHdf extends BuscadorHdf {
         return lst11h;
     }
 
+    public String getDirHdf() {
+        return dirHdf;
+    }
+
+    public void setDirHdf(String dirHdf) {
+        this.dirHdf = dirHdf;
+    }
+
+    
     /**
      * Indica si para la búsqueda de los ficheros HDF se usará el FTP si dichos
      * ficheros no se encuentran en el disco duro local.

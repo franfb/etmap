@@ -24,7 +24,7 @@ class BuscadorHdf {
     protected String[] fichTerra;
     protected String[] fichAquaFallo;
     protected String[] fichTerraFallo;
-    protected EventListenerList listenerList;
+    protected EventListenerList listenerList = new EventListenerList();
 
     protected BuscadorHdf(ParamConfig config) {
         usarFtp = config.getUsarFtp();
