@@ -15,6 +15,7 @@ public class ParamConfig {
     private HorasSat horaDeseada = HorasSat.AQUA_14H;
 //    private String dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
     private String dirHdfs = "/hdfs";
+    private String separador = "/";
     private String dirFtp = "e4ftl01u.ecs.nasa.gov";
     private Boolean usarFtp = false;
 
@@ -23,6 +24,7 @@ public class ParamConfig {
         horaDeseada = HorasSat.AQUA_14H;
         //dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
         dirHdfs = "/hdfs";
+        separador = "/";
         dirFtp = "e4ftl01u.ecs.nasa.gov";
         usarFtp = false;
     }
@@ -65,5 +67,13 @@ public class ParamConfig {
 
     public void setUsarFtp(Boolean usarFtp) {
         this.usarFtp = usarFtp;
+    }
+
+    public String getSeparador() {
+        return separador;
+    }
+
+    public void setSeparador(String separador) {
+        this.separador = separador;
     }
 }
