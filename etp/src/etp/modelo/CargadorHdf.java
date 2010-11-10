@@ -26,11 +26,13 @@ class CargadorHdf extends BuscadorHdf {
     protected boolean datosCargados;
     private ModisLoader cargadorModis;
     private String dirHdf;
+    private String separador;
     public static final int MAX_HDF_FILES = 10;
 
     protected CargadorHdf(ParamConfig config) {
         super(config);
         dirHdf = config.getDirHdfs();
+        separador = config.getSeparador();
         //buscador = new BuscadorHdf(config);
         datosCargados = false;
         cargadorModis = new ModisLoader();
@@ -105,7 +107,7 @@ class CargadorHdf extends BuscadorHdf {
         // Cargamos los ficheros de Terra
         for (int i = 0; i < fichTerra.length; i++) {
             try {
-                cargadorModis.openFile(dirHdf + "\\" + fichTerra[i]);
+                cargadorModis.openFile(dirHdf + separador + fichTerra[i]);
                 lst11h[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
                 lst23h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
@@ -117,7 +119,7 @@ class CargadorHdf extends BuscadorHdf {
         // Cargamos los ficheros de Aqua
         for (int i = 0; i < fichAqua.length; i++) {
             try {
-                cargadorModis.openFile(dirHdf + "\\" + fichAqua[i]);
+                cargadorModis.openFile(dirHdf + separador + fichAqua[i]);
                 lst14h[i] = readDataset(ModisLoader.LST_DAY_1KM, cargadorModis);
                 lst02h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
