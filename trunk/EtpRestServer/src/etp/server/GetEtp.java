@@ -156,7 +156,9 @@ public class GetEtp {
 		String yearStr = splitDate[2];
 		Calendar dayReq = Calendar.getInstance();
 		dayReq.clear();
-		dayReq.set(Integer.parseInt(yearStr), Integer.parseInt(monthStr) - 1, Integer.parseInt(dayStr));
+		// The reference day is always yesterday; we must substract 1 to the day
+		// The month is 0-based, i.e. January == 0
+		dayReq.set(Integer.parseInt(yearStr), Integer.parseInt(monthStr) - 1, Integer.parseInt(dayStr) - 1);
 		long diffDays = (refDay.getTimeInMillis() - dayReq.getTimeInMillis()) / (24 * 60 * 60 * 1000);
 		if (diffDays < 0) {
 			lle.setStatusMsg("La fecha máxima disponible es la de ayer.");
