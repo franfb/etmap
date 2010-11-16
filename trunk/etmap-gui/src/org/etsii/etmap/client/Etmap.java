@@ -1,6 +1,7 @@
 package org.etsii.etmap.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
@@ -9,10 +10,19 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.maps.client.InfoWindow;
+import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.event.MarkerClickHandler;
+import com.google.gwt.maps.client.geocode.Geocoder;
+import com.google.gwt.maps.client.geocode.LocationCallback;
+import com.google.gwt.maps.client.geocode.Placemark;
 import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.maps.client.geom.Point;
+import com.google.gwt.maps.client.overlay.Icon;
+import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -27,21 +37,19 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class Etmap implements EntryPoint {
 	private MapWidget map;
-//	private Label resultsLabel = new Label();
-//	private Label errorMsgLabel = new Label();
+	private MarkerOptions etIcon1;
+	private MarkerOptions etIcon2;
+	private MarkerOptions etIcon3;
 	private final DialogBox dialogoError = new DialogBox();
 	private HTML errorMsg;
+	private String location;
 
 	/**
 	 * Convert the string of JSON into JavaScript object.
 	 */
-//	private final native JsArray<EtpData> asArrayOfEtpData(String json) /*-{ return eval( "(" + json + ")" );	}-*/;
-	
-	/**
-	 * Convert the string of JSON into JavaScript object.
-	 */
-	// Parenthesis inside surrounding json string inside eval are necessary to parse correctly the string,
-	// otherwise throws an JavaScriptException (SyntaxError: invalid label)
+	// Parenthesis surrounding json string inside eval are necessary to parse
+	// correctly the string, otherwise throws a JavaScriptException
+	// (SyntaxError: invalid label)
 	private final native EtpData asEtpData(String json) /*-{ return eval( "(" + json + ")" );	}-*/;
 
 	/**
@@ -55,37 +63,31 @@ public class Etmap implements EntryPoint {
 
 		public void onResponseReceived(Request request, Response response) {
 			String responseText = response.getText();
-//			resultsLabel.setText(Integer.toString(response.getStatusCode()));
 			if (200 == response.getStatusCode()) {
-//				JsArray<EtpData> data = asArrayOfEtpData(responseText);
 				EtpData etp = asEtpData(responseText);
-//				Window.alert(Integer.toString(data.length()));
-				Window.alert(responseText);
-//				for (int i = 0; i < data.length(); i++) {
-//					EtpData etp = data.get(i);
-					if (etp.getStatusMsg().equals("OK")) {
-						Window.alert("Dentro!!");
-//						resultsLabel.setText(Double.toString(etp.getEtp()));
-//						errorMsgLabel.setVisible(false);
-					} else {
-						displayError("The server produced an error ",
-								etp.getStatusMsg());
-					}
-//				}
+				if (etp.getStatusMsg().equals("OK")) {
+					// Window.alert("Dentro!!");
+					Marker m = createMarkerEt(etp);
+					map.addOverlay(m);
+					// infoWindowEt(m, etp);
+				} else {
+					displayError("El servidor ha devuelto un error",
+							etp.getStatusMsg());
+				}
 			} else {
-				displayError("No funciona ", responseText);
+				displayError("Código de respuesta inválido", responseText);
 			}
 		}
 	}
 
 	private void showEtpOnMap(LatLng coord) {
 		String url = "http://localhost:8080/EtpRestServer/getetp/json?";
-		//String url = "http://api.search.yahoo.com\\/ImageSearchService\\/V1/imageSearch?appid=YahooDemo&query=potato&results=2&output=json";
 		url += "lat=" + Double.toString(coord.getLatitude());
 		url += "&lng=" + Double.toString(coord.getLongitude());
+		url += "&date=08-01-2009";
 		url += "&days=7";
 		url += "&hour=14";
-//		String url = "http://www.google.es";
+		url += "&ftp=false";
 
 		url = URL.encode(url);
 
@@ -116,8 +118,33 @@ public class Etmap implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		buildUi();
+		crearDialogoError();
 		map.addMapClickHandler(new EtMapClickHandler());
 
+		// Loads icons
+		Icon icon = Icon.newInstance();
+		icon.setIconAnchor(Point.newInstance(16, 16));
+		icon.setInfoWindowAnchor(Point.newInstance(32, 0));
+		icon.setShadowURL("http://maps.google.com/mapfiles/ms/micons/pushpin_shadow.png");
+		icon.setImageURL("http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png");
+		etIcon1 = MarkerOptions.newInstance();
+		etIcon1.setIcon(icon);
+
+		icon = Icon.newInstance();
+		icon.setIconAnchor(Point.newInstance(16, 16));
+		icon.setInfoWindowAnchor(Point.newInstance(32, 0));
+		icon.setShadowURL("http://maps.google.com/mapfiles/ms/micons/pushpin_shadow.png");
+		icon.setImageURL("http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png");
+		etIcon2 = MarkerOptions.newInstance();
+		etIcon2.setIcon(icon);
+
+		icon = Icon.newInstance();
+		icon.setIconAnchor(Point.newInstance(16, 16));
+		icon.setInfoWindowAnchor(Point.newInstance(32, 0));
+		icon.setShadowURL("http://maps.google.com/mapfiles/ms/micons/pushpin_shadow.png");
+		icon.setImageURL("http://maps.google.com/mapfiles/ms/micons/red-pushpin.png");
+		etIcon2 = MarkerOptions.newInstance();
+		etIcon2.setIcon(icon);
 	}
 
 	private void buildUi() {
@@ -182,14 +209,97 @@ public class Etmap implements EntryPoint {
 	}
 
 	/**
+	 * Creates a marker for potential evapotranspiration
+	 */
+	private Marker createMarkerEt(final EtpData etp) {
+		MarkerOptions markerOpt = MarkerOptions.newInstance();
+		markerOpt.setClickable(true);
+		MarkerOptions opt = etIcon1;
+		if (etp.getEtp() >= 3) {
+			opt = etIcon2;
+		}
+		if (etp.getEtp() >= 7) {
+			opt = etIcon3;
+		}
+		final Marker marker = new Marker(LatLng.newInstance(etp.getLat(),
+				etp.getLng()), opt);
+
+		Geocoder geoc = new Geocoder();
+		geoc.getLocations(LatLng.newInstance(etp.getLat(), etp.getLng()),
+				new LocationCallback() {
+
+					@Override
+					public void onSuccess(JsArray<Placemark> locations) {
+						// final String location = locations.get(0).getCity() +
+						// ", " + locations.get(0).getState() + ", " +
+						// locations.get(0).getCounty() + ", " +
+						// locations.get(0).getLocality() + ", " +
+						// locations.get(0).getAdministrativeArea();
+						String location;
+						Placemark pm = locations.get(0);
+						if (pm.getCity() != null) {
+							location = pm.getCity();
+						} else {
+							location = "Indeterminado";
+						}
+						if (pm.getCountry().equals("ES")) {
+							location += ", España";
+						}
+						final String loc = location;
+
+						marker.addMarkerClickHandler(new MarkerClickHandler() {
+							@Override
+							public void onClick(MarkerClickEvent event) {
+								infoWindowEt(marker, etp, loc);
+							}
+						});
+					}
+
+					@Override
+					public void onFailure(int statusCode) {
+						final String location = "Sin información";
+						marker.addMarkerClickHandler(new MarkerClickHandler() {
+							@Override
+							public void onClick(MarkerClickEvent event) {
+								infoWindowEt(marker, etp, location);
+							}
+						});
+					}
+				});
+
+		return marker;
+	}
+
+	/**
+	 * Creates marker's Info Window with Geocoder information
+	 */
+	private void infoWindowEt(final Marker marker, final EtpData etp,
+			final String location) {
+		InfoWindow info = map.getInfoWindow();
+
+		VerticalPanel vertical = new VerticalPanel();
+
+		HTML titulo = new HTML("<b>Información de esta localización</b><br>");
+		titulo.setStyleName("texto15");
+		vertical.add(titulo);
+		
+		HTML text = new HTML(location
+				+ "<br>Latitud: " + Double.toString(etp.getLat())
+				+ "<br>Longitud: " + Double.toString(etp.getLng())
+				+ "<br>Evapotranspiración: " + Double.toString(etp.getEtp()));
+		text.setStyleName("texto13");
+		vertical.add(text);
+
+		info.open(marker, new InfoWindowContent(vertical));
+	}
+
+	/**
 	 * If can't get JSON, display error message.
 	 * 
 	 * @param error
 	 */
 	private void displayError(String error, String info) {
-//		errorMsgLabel.setText("Error: " + error + "(" + info + ")");
-//		errorMsgLabel.setVisible(true);
-		errorMsg.setText(error + " (" + info + ")");
+		errorMsg.setText(error + ": " + info);
 		dialogoError.show();
 		dialogoError.center();
 	}
@@ -199,13 +309,13 @@ public class Etmap implements EntryPoint {
 	}
 
 	private void displayRequestError(String message) {
-		displayError("Ha fallado la solicitud ", message);
+		displayError("Ha fallado la solicitud", message);
 	}
 
 	private void displaySendError(String message) {
-		displayError("Ha fallado el envío ", message);
+		displayError("Ha fallado el envío", message);
 	}
-	
+
 	private void crearDialogoError() {
 		Button ok = new Button("ok");
 		dialogoError.setText("ERROR");
@@ -216,14 +326,19 @@ public class Etmap implements EntryPoint {
 		});
 		dialogoError.setGlassEnabled(true);
 		dialogoError.setAnimationEnabled(true);
-	    errorMsg = new HTML();
-	    errorMsg.setStyleName("texto15");
-	    ok.setStyleName("texto13");
+		errorMsg = new HTML();
+		HTML contactMsg = new HTML(
+				"Vuelva a intentarlo. Si el problema persiste, por favor, póngase en contacto con nosotros.");
+		errorMsg.setStyleName("texto15");
+		contactMsg.setStyleName("texto15");
+		ok.setStyleName("texto13");
 		VerticalPanel vertical = new VerticalPanel();
 		vertical.setSpacing(10);
 		vertical.add(errorMsg);
+		vertical.add(contactMsg);
 		vertical.add(ok);
-		vertical.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_CENTER);
+		vertical.setCellHorizontalAlignment(ok,
+				HasHorizontalAlignment.ALIGN_CENTER);
 		dialogoError.setWidget(vertical);
 	}
 
