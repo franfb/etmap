@@ -20,7 +20,8 @@ public class CapturaDatos {
         // para que Java no las reconozca como un símbolo especial
         Ficheros = new ListaFicheros(directorioHdfLocal);
         Ftp = new ListaFTP();
-        Ftp.Conectar("e4ftl01u.ecs.nasa.gov", 21, "anonymous", "anonymous");
+//        Ftp.Conectar("e4ftl01u.ecs.nasa.gov", 21, "anonymous", "anonymous");
+        Ftp.Conectar(directorioHdfFTP, 21, login, pass);
     }
 
     public String obtenerHdfLocal(String satelite, String granulo, String fecha) {
@@ -37,7 +38,8 @@ public class CapturaDatos {
     public String obtenerHdfFTP(String satelite, String granulo, String fecha) {
         String dirBase;
         if (satelite.equals("MOD11A1")) {
-            dirBase = "/MOLT/MOD11A1.005";
+//            dirBase = "/MOLT/MOD11A1.005";
+            dirBase = "/MOLT/MOD11A1.041";
         } else {
             if (satelite.equals("MYD11A1")) {
                 dirBase = "/MOLA/MYD11A1.005";

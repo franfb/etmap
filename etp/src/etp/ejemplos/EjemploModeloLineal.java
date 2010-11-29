@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package etp.ejemplos;
 
 import etp.configuracion.ParamConfig;
@@ -17,31 +16,31 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class EjemploModeloLineal {
+
     /**
      * @param args the command line arguments
      *
      *
      * Para usar un rango de fechas:
      * Calendar fecha = Calendar.getInstance();
-           fecha.set(Calendar.DAY_OF_MONTH, dia_del_mes);
-           fecha.set(Calendar.MONTH, mes);
-           fecha.set(Calendar.YEAR, año);
+    fecha.set(Calendar.DAY_OF_MONTH, dia_del_mes);
+    fecha.set(Calendar.MONTH, mes);
+    fecha.set(Calendar.YEAR, año);
      *
      * fecha.set(Calendar.DAY_OF_YEAR, fecha.get(Calendar.DAY_OF_YEAR + 1));
      *
      * Calendar origDay = Calendar.getInstance();
-System.out.println ("Original Date: " + origDay.getTime());
+    System.out.println ("Original Date: " + origDay.getTime());
 
-Calendar prevDay = (Calendar) origDay.clone();
-prevDay.add (Calendar.DAY_OF_YEAR, -1);
-System.out.println ("Previous Day: " + prevDay.getTime());
+    Calendar prevDay = (Calendar) origDay.clone();
+    prevDay.add (Calendar.DAY_OF_YEAR, -1);
+    System.out.println ("Previous Day: " + prevDay.getTime());
 
-Calendar nextDay = (Calendar) origDay.clone();
-nextDay.add (Calendar.DAY_OF_YEAR, 1);
-System.out.println ("Next Day: " + nextDay.getTime());
-}
+    Calendar nextDay = (Calendar) origDay.clone();
+    nextDay.add (Calendar.DAY_OF_YEAR, 1);
+    System.out.println ("Next Day: " + nextDay.getTime());
+    }
      *
      */
     public static void main(String[] args) {
@@ -54,25 +53,29 @@ System.out.println ("Next Day: " + nextDay.getTime());
 
         ParamConfig param = new ParamConfig();
         param.setDiasUtilizados(7);
-        ModeloEtLineal modelo = new ModeloEtLineal(param, 0.5, -20);
+        param.setHoraDeseada(HorasSat.TERRA_11H);
+        ModeloEtLineal modelo = new ModeloEtLineal(param, 0.1714753, -1.3384307);
         try {
-            modelo.buscarHdfs(7, 1, 2009);
-        }
-        catch (ModelException ex) {
+            modelo.buscarHdfs(23, 11, 2010);
+        } catch (ModelException ex) {
             //Logger.getLogger(EjemploModeloLineal.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
 //        for (int i = 0; i < 1200; i++) {
 //            for (int j = 0; j < 1200; j++) {
-                try {
-                Double et = modelo.getEtByLatLon(28.2333391114064, -16.7892393975174);
-                if (et != ModeloEtLineal.NO_EVAPOTRANSP)
-                    System.out.println("Evapotranspiración = " + et.toString());
-                }
-                catch (DataNotLoadedException e) {
-                    //System.out.println(e.getMessage());
-                    e.printStackTrace();
-                }
+        try {
+//                Double et = modelo.getEtByLatLon(28.2333391114064, -16.7892393975174);
+            Double et = modelo.getEtByLatLon(28.341507, -16.433358);
+            if (et != ModeloEtLineal.NO_EVAPOTRANSP) {
+                System.out.println("Evapotranspiración = " + et.toString());
+            }
+            else {
+                System.out.println("No se ha podido calcular la evapotranspiración.");
+            }
+        } catch (DataNotLoadedException e) {
+            //System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
 //            }
 //        }
 //        Calendar orig = Calendar.getInstance();

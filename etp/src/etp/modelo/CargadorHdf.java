@@ -112,6 +112,8 @@ class CargadorHdf extends BuscadorHdf {
                 lst23h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
             catch (Exception e) {
+                System.out.println("Error cargando ficheros Terra");
+                e.printStackTrace();
                 throw new NoFilesLoadedException();
             }
         }
@@ -124,6 +126,8 @@ class CargadorHdf extends BuscadorHdf {
                 lst02h[i] = readDataset(ModisLoader.LST_NIGHT_1KM, cargadorModis);
             }
             catch (Exception e) {
+                System.out.println("Error cargando ficheros Aqua");
+                e.printStackTrace();
                 throw new NoFilesLoadedException();
             }
         }

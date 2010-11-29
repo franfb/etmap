@@ -104,6 +104,8 @@ public class LstData {
 		int y_inf = y_sup + 1;
 		
 		// Calculamos las posiciones a interpolar en un cuadrado de lado = 1
+                double x_interp2 = x_interp;
+                double y_interp2 = y_interp;
 		x_interp = x_interp - x_izq;
 		y_interp = y_inf - y_interp;
 		
