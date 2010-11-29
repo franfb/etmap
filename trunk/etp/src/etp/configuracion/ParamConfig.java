@@ -14,8 +14,10 @@ public class ParamConfig {
     private Integer diasUtilizados = 1;
     private HorasSat horaDeseada = HorasSat.AQUA_14H;
 //    private String dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
-    private String dirHdfs = "/hdfs";
-    private String separador = "/";
+    private String dirHdfs = "c:\\hdfs\\";
+    //private String dirHdfs = "/hdfs/";
+    //private String separador = "/";
+    private String separador = "\\";
     private String dirFtp = "e4ftl01u.ecs.nasa.gov";
     private Boolean usarFtp = false;
 
@@ -23,8 +25,10 @@ public class ParamConfig {
         diasUtilizados = 1;
         horaDeseada = HorasSat.AQUA_14H;
         //dirHdfs = "d:\\etsii\\pfc\\hdfs\\";
-        dirHdfs = "/hdfs";
-        separador = "/";
+        dirHdfs = "c:\\hdfs\\";
+        //dirHdfs = "/hdfs/";
+        //separador = "/";
+        separador = "\\";
         dirFtp = "e4ftl01u.ecs.nasa.gov";
         usarFtp = false;
     }
