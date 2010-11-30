@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android= "http://schemas.android.com/apk/res/android"
+   	android:layout_width="fill_parent"
+   	android:layout_height="fill_parent">
+
+	<com.google.android.maps.MapView
+     	xmlns:android="http://schemas.android.com/apk/res/android"
+   		android:id="@+id/mapview"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:clickable="true"
+    	android:apiKey="0h8rI6qvnLtbaTCVrY527vMg3hmu9Dov50QBt8A"
+	/>
+
+	<LinearLayout xmlns:android=
+   		"http://schemas.android.com/apk/res/android"
+   		android:orientation="horizontal"
+   		android:layout_width="fill_parent"
+   		android:layout_height="wrap_content"
+   		android:paddingTop="4dp"
+   		android:paddingLeft="2dp"
+   		android:background="#AA000000">
+		
+		<RelativeLayout android:layout_width="fill_parent"
+   			android:layout_height="wrap_content">
+		
+			<Button android:id="@+id/Button01"
+				android:layout_width="200dp"
+				android:layout_height="50dp"
+				android:layout_centerVertical="true"
+				android:text="Solicitar ET de..."
+				android:textSize="14sp"
+				android:textStyle="bold"
+				android:enabled="false">
+			</Button>
+			
+			<TextView android:id="@+id/TextView01"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_toRightOf="@+id/Button01"
+				android:paddingLeft="20dp"
+				android:textStyle="bold"
+				android:text="... pulse sobre el mapa"
+				android:textSize="16sp" android:layout_marginTop="10dp">
+			</TextView>
+			
+		</RelativeLayout>
+		
+	</LinearLayout>
+	
+</FrameLayout>
