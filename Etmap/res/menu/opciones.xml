@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	
+	<item android:id="@+id/numdias" android:title="Cambiar Días Referencia" android:icon="@drawable/calendar">
+		<menu xmlns:android="http://schemas.android.com/apk/res/android">
+			<group android:checkableBehavior="single">
+				<item android:id="@+id/dias1" android:title="El último día" android:checked="false"></item>
+				<item android:id="@+id/dias3" android:title="Los 3 últimos días" android:checked="false"></item>
+				<item android:id="@+id/dias5" android:title="Los 5 últimos días" android:checked="false"></item>
+				<item android:id="@+id/dias7" android:title="Los 7 últimos días" android:checked="true"></item>
+			</group>
+		</menu>
+	</item>
+	
+	<item android:id="@+id/selechoras" android:title="Elegir Datos Temperatura" android:icon="@drawable/sat">
+		<menu xmlns:android="http://schemas.android.com/apk/res/android">
+			<group android:checkableBehavior="single">
+				<item android:id="@+id/hora02" android:title="Temperatura a las 02 horas" android:checked="false"></item>
+				<item android:id="@+id/hora11" android:title="Temperatura a las 11 horas" android:checked="false"></item>
+				<item android:id="@+id/hora14" android:title="Temperatura a las 14 horas" android:checked="true"></item>
+				<item android:id="@+id/hora23" android:title="Temperatura a las 23 horas" android:checked="false"></item>
+			</group>
+		</menu>
+	</item>
+	
+	<item android:id="@+id/buscarlugar" android:title="Buscar Localización" android:icon="@drawable/lupa"></item>
+	
+	<item android:id="@+id/centrarmapa" android:title="Centrar Mapa" android:icon="@drawable/refres"></item>
+	
+	<item android:id="@+id/cambiarmapa" android:title="Cambiar Tipo Mapa" android:icon="@drawable/capas">
+		<menu xmlns:android="http://schemas.android.com/apk/res/android">
+			<group android:checkableBehavior="single">
+				<item android:id="@+id/tipoTrafico" android:title="Mapa de Tráfico" android:checked="true"></item>
+				<item android:id="@+id/tipoSatelite" android:title="Mapa de Satélite" android:checked="false"></item>
+			</group>
+		</menu>
+	</item>
+	
+</menu>
